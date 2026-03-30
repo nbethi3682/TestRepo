@@ -1,0 +1,193 @@
+import random
+
+class Environment:
+    def __init__(self, width=4, height=4, start_pos=(0, 0), pitProb=0.2):
+        self.width = width
+        self.height = height
+        self.start_pos = start_pos
+        self.pitProb = pitProb
+        self.reset()
+
+    def reset(self):
+        self.agent_position = list(self.start_pos)
+        self.agent_direction = "RIGHT"
+        self.agent_has_gold = False
+        self.agent_alive = True
+        self.arrow_available = True
+        self.wumpus_alive = True
+        self.score = 0
+        self.game_over = False
+
+        self._generate_world()
+        return self._get_percept()
+
+    # ------------------------------------------------------------
+    # WORLD CREATION
+    # ------------------------------------------------------------
+    def _generate_world(self):
+        self.pits = set()
+        for x in range(self.width):
+            for y in range(self.height):
+                if (x, y) != tuple(self.start_pos):
+                    if random.random() < self.pitProb:
+                        self.pits.add((x, y))
+
+        # Wumpus
+        while True:
+            wx = random.randint(0, self.width - 1)
+            wy = random.randint(0, self.height - 1)
+            if (wx, wy) != tuple(self.start_pos):
+                self.wumpus_position = (wx, wy)
+                break
+
+        # Gold
+        while True:
+            gx = random.randint(0, self.width - 1)
+            gy = random.randint(0, self.height - 1)
+            if (gx, gy) != tuple(self.start_pos):
+                self.gold_position = (gx, gy)
+                break
+
+    # ------------------------------------------------------------
+    # HELPERS
+    # ------------------------------------------------------------
+    def _adjacent(self, x, y):
+        adj = []
+        if x > 0: adj.append((x - 1, y))
+        if x < self.width - 1: adj.append((x + 1, y))
+        if y > 0: adj.append((x, y - 1))
+        if y < self.height - 1: adj.append((x, y + 1))
+        return adj
+
+    def _get_percept(self, bump=False, scream=False, reward=0):
+        x, y = self.agent_position
+
+        stench = False
+        if self.wumpus_alive:
+            stench = ((x, y) == self.wumpus_position or
+                      (x, y) in self._adjacent(*self.wumpus_position))
+
+        breeze = any(adj in self.pits for adj in self._adjacent(x, y))
+        glitter = (x, y) == self.gold_position
+
+        return (stench, breeze, glitter, bump, scream, reward)
+
+    # ------------------------------------------------------------
+    # STEP FUNCTION
+    # ------------------------------------------------------------
+    def step(self, action):
+        if self.game_over:
+            return self._get_percept()
+
+        reward = -1
+        bump = False
+        scream = False
+        x, y = self.agent_position
+
+        # --------------------------------------
+        # TURNS
+        # --------------------------------------
+        if action == "TurnLeft":
+            dirs = ["UP", "LEFT", "DOWN", "RIGHT"]
+            self.agent_direction = dirs[(dirs.index(self.agent_direction) + 1) % 4]
+
+        elif action == "TurnRight":
+            dirs = ["UP", "RIGHT", "DOWN", "LEFT"]
+            self.agent_direction = dirs[(dirs.index(self.agent_direction) + 1) % 4]
+
+        # --------------------------------------
+        # MOVE FORWARD
+        # --------------------------------------
+        elif action == "Forward":
+            nx, ny = x, y
+            if self.agent_direction == "RIGHT": nx += 1
+            elif self.agent_direction == "LEFT": nx -= 1
+            elif self.agent_direction == "UP": ny += 1
+            elif self.agent_direction == "DOWN": ny -= 1
+
+            # Check wall
+            if 0 <= nx < self.width and 0 <= ny < self.height:
+                self.agent_position = [nx, ny]
+                pos = tuple(self.agent_position)
+
+                # Pit death
+                if pos in self.pits:
+                    reward = -1000
+                    self.agent_alive = False
+                    self.game_over = True
+
+                # Wumpus death
+                elif pos == self.wumpus_position and self.wumpus_alive:
+                    reward = -1000
+                    self.agent_alive = False
+                    self.game_over = True
+
+            else:
+                bump = True
+
+        # --------------------------------------
+        # GRAB GOLD
+        # --------------------------------------
+        elif action == "Grab":
+            if tuple(self.agent_position) == self.gold_position:
+                self.agent_has_gold = True
+                self.gold_position = None
+
+        # --------------------------------------
+        # CLIMB
+        # --------------------------------------
+        elif action == "Climb":
+            if tuple(self.agent_position) == tuple(self.start_pos):
+                if self.agent_has_gold:
+                    reward = 1000
+                self.game_over = True
+
+        # --------------------------------------
+        # SHOOT ARROW
+        # --------------------------------------
+        elif action == "Shoot":
+            if self.arrow_available:
+                self.arrow_available = False
+                dx = dy = 0
+
+                if self.agent_direction == "RIGHT": dx = 1
+                elif self.agent_direction == "LEFT": dx = -1
+                elif self.agent_direction == "UP": dy = 1
+                elif self.agent_direction == "DOWN": dy = -1
+
+                ax, ay = x, y
+                while 0 <= ax < self.width and 0 <= ay < self.height:
+                    if (ax, ay) == self.wumpus_position and self.wumpus_alive:
+                        scream = True
+                        self.wumpus_alive = False
+                        break
+                    ax += dx
+                    ay += dy
+
+        self.score += reward
+        return self._get_percept(bump, scream, reward)
+
+    # ------------------------------------------------------------
+    # RENDER FOR DEBUGGING
+    # ------------------------------------------------------------
+    def render(self):
+        print("\nWorld State:\n")
+        for y in reversed(range(self.height)):
+            row = ""
+            for x in range(self.width):
+                cell = ". "
+                if [x, y] == self.agent_position:
+                    cell = {"RIGHT":"A>", "LEFT":"A<", "UP":"A^", "DOWN":"Av"}[self.agent_direction]
+                elif (x, y) == self.wumpus_position and self.wumpus_alive:
+                    cell = "W "
+                elif self.gold_position and (x, y) == self.gold_position:
+                    cell = "G "
+                elif (x, y) in self.pits:
+                    cell = "P "
+                row += cell + " "
+            print(row)
+
+        print("Score:", self.score)
+        print("Alive:", self.agent_alive)
+        print("Gold:", self.agent_has_gold)
+        print("Arrow:", self.arrow_available)
