@@ -1,0 +1,101 @@
+# ------------------------------------------------------------
+    # PART 3 — PERCEPT UPDATING + BAYESIAN INFERENCE
+    # ------------------------------------------------------------
+    def update_with_percept(self, percept):
+        """Update belief models using the latest percept."""
+        stench, breeze, glitter, bump, scream, reward = percept
+        cell = self.current_position
+
+        # Track percept history
+        self.breeze_map[cell] = breeze
+        self.stench_map[cell] = stench
+
+        # If scream heard → Wumpus is dead
+        if scream:
+            self.heard_scream = True
+            self._kill_wumpus()
+
+        # Update pit and wumpus probabilities
+        self._infer_pits()
+        self._infer_wumpus()
+
+        # After inference, update safe cells and frontier
+        self._update_safe_and_frontier()
+
+    # ------------------------------------------------------------
+    # INTERNAL — Inference for pits using Pit–Breeze network
+    # ------------------------------------------------------------
+    def _infer_pits(self):
+        evidence = {}
+
+        # Add known breeze evidence to model
+        for (x, y), val in self.breeze_map.items():
+            evidence[f"Breeze_{x}{y}"] = "T" if val else "F"
+
+        try:
+            post = self.pit_breeze_model.predict_proba(evidence)
+        except Exception:
+            return  # if model cannot update yet
+
+        # Update pit probabilities
+        for x in range(self.width):
+            for y in range(self.height):
+                node = self.pit_nodes[(x, y)]
+                dist = post[self.pit_breeze_model.nodes.index(node)]
+                if isinstance(dist, DiscreteDistribution):
+                    self.pit_probs[(x, y)] = dist.prob("T")
+
+    # ------------------------------------------------------------
+    # INTERNAL — Inference for Wumpus using Wumpus–Stench network
+    # ------------------------------------------------------------
+    def _infer_wumpus(self):
+        if not self.wumpus_alive:
+            for c in self.wumpus_probs:
+                self.wumpus_probs[c] = 0.0
+            return
+
+        evidence = {}
+        for (x, y), val in self.stench_map.items():
+            evidence[f"Stench_{x}{y}"] = "T" if val else "F"
+
+        try:
+            post = self.wumpus_stench_model.predict_proba(evidence)
+        except Exception:
+            return
+
+        # Extract posterior for WumpusLocation
+        wumpus_dist = post[self.wumpus_stench_model.nodes.index(self.wumpus_node)]
+
+        if isinstance(wumpus_dist, DiscreteDistribution):
+            for key, prob in wumpus_dist.items():
+                x, y = map(int, key.split(","))
+                self.wumpus_probs[(x, y)] = prob
+
+    # ------------------------------------------------------------
+    # INTERNAL — Apply safety rules
+    # ------------------------------------------------------------
+    def _update_safe_and_frontier(self):
+        """Mark cells safe if p_pit = 0 AND p_wumpus = 0.
+           Add unvisited neighbors to frontier."""
+        for x in range(self.width):
+            for y in range(self.height):
+                c = (x, y)
+
+                if self.pit_probs[c] == 0.0 and self.wumpus_probs[c] == 0.0:
+                    self.known_safe.add(c)
+
+                # If not visited, add to frontier
+                if c not in self.visited:
+                    self.frontier.add(c)
+
+        # Remove safe cells from frontier
+        self.frontier -= self.known_safe
+
+    # ------------------------------------------------------------
+    # INTERNAL — Kill the Wumpus after scream
+    # ------------------------------------------------------------
+    def _kill_wumpus(self):
+        """Set all Wumpus probabilities to zero."""
+        self.wumpus_alive = False
+        for c in self.wumpus_probs:
+            self.wumpus_probs[c] = 0.0
