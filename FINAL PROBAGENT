@@ -1,0 +1,366 @@
+from collections import defaultdict, deque
+import itertools
+from pomegranate import *
+
+# ------------------------------------------------------------
+# ProbAgent (Assignment 3)
+# ------------------------------------------------------------
+class ProbAgent:
+    def __init__(self, width=4, height=4):
+        self.width = width
+        self.height = height
+
+        # --------------------------
+        # BELIEF STATES
+        # --------------------------
+        self.pit_probs = {
+            (x, y): 0.2 if (x, y) != (0, 0) else 0.0
+            for x in range(width)
+            for y in range(height)
+        }
+
+        total_cells = width * height - 1
+        uniform = 1 / total_cells
+
+        self.wumpus_probs = {
+            (x, y): (uniform if (x, y) != (0, 0) else 0.0)
+            for x in range(width)
+            for y in range(height)
+        }
+
+        self.wumpus_alive = True
+        self.heard_scream = False
+
+        # PERCEPT HISTORY
+        self.breeze_map = {}
+        self.stench_map = {}
+
+        # STATE
+        self.current_position = (0, 0)
+        self.current_direction = "RIGHT"
+        self.visited = set()
+        self.frontier = set()
+        self.known_safe = set([(0, 0)])
+        self.plan = []
+        self.has_gold = False
+        self.arrow_used = False
+
+        self.abort_threshold = 0.50
+
+        # Build Bayesian networks
+        self.build_bayesian_models()
+
+    # ------------------------------------------------------------
+    # GRID HELPERS
+    # ------------------------------------------------------------
+    def adjacent(self, cell):
+        x, y = cell
+        adj = []
+        if x > 0: adj.append((x - 1, y))
+        if x < self.width - 1: adj.append((x + 1, y))
+        if y > 0: adj.append((x, y - 1))
+        if y < self.height - 1: adj.append((x, y + 1))
+        return adj
+
+    def update_agent_state(self, pos, direction):
+        self.current_position = tuple(pos)
+        self.current_direction = direction
+
+    def mark_safe(self, cell):
+        self.known_safe.add(cell)
+        self.pit_probs[cell] = 0.0
+        self.wumpus_probs[cell] = 0.0
+
+    # ------------------------------------------------------------
+    # PART 2 — BUILD BAYESIAN MODELS
+    # ------------------------------------------------------------
+    def build_bayesian_models(self):
+        # ============= PIT–BREEZE MODEL =============
+        pit_nodes = {}
+        for x in range(self.width):
+            for y in range(self.height):
+                name = f"Pit_{x}{y}"
+                prior = 0.2 if (x, y) != (0, 0) else 0.0
+                pit_nodes[(x, y)] = Node(
+                    DiscreteDistribution({"T": prior, "F": 1 - prior}),
+                    name=name
+                )
+
+        breeze_nodes = {}
+        for x in range(self.width):
+            for y in range(self.height):
+                adj = self.adjacent((x, y))
+                parents = [f"Pit_{a[0]}{a[1]}" for a in adj]
+
+                table = []
+                for config in itertools.product(["T", "F"], repeat=len(parents)):
+                    hasPit = "T" in config
+                    breeze_val = "T" if hasPit else "F"
+                    table.append(list(config) + ["T", 1.0 if breeze_val == "T" else 0.0])
+                    table.append(list(config) + ["F", 1.0 if breeze_val == "F" else 0.0])
+
+                cpt = ConditionalProbabilityTable(
+                    table,
+                    [pit_nodes[a].distribution for a in adj]
+                )
+                breeze_nodes[(x, y)] = Node(cpt, name=f"Breeze_{x}{y}")
+
+        self.pit_breeze_model = BayesianNetwork("Pit-Breeze Model")
+        for n in pit_nodes.values():
+            self.pit_breeze_model.add_node(n)
+        for n in breeze_nodes.values():
+            self.pit_breeze_model.add_node(n)
+
+        for x in range(self.width):
+            for y in range(self.height):
+                for adj in self.adjacent((x, y)):
+                    self.pit_breeze_model.add_edge(
+                        pit_nodes[adj], breeze_nodes[(x, y)]
+                    )
+
+        self.pit_breeze_model.bake()
+
+        self.pit_nodes = pit_nodes
+        self.breeze_nodes = breeze_nodes
+
+        # ============= WUMPUS–STENCH MODEL =============
+        states = [f"{x},{y}"
+                  for x in range(self.width)
+                  for y in range(self.height)
+                  if (x, y) != (0, 0)]
+
+        uniform = 1 / len(states)
+        wumpus_dist = DiscreteDistribution({s: uniform for s in states})
+
+        self.wumpus_node = Node(wumpus_dist, name="WumpusLocation")
+
+        stench_nodes = {}
+        for x in range(self.width):
+            for y in range(self.height):
+                table = []
+                for loc in states:
+                    wx, wy = map(int, loc.split(","))
+                    is_stench = ((x, y) == (wx, wy) or (x, y) in self.adjacent((wx, wy)))
+                    table.append([loc, "T", 1.0 if is_stench else 0.0])
+                    table.append([loc, "F", 1.0 if not is_stench else 0.0])
+
+                cpt = ConditionalProbabilityTable(table, [self.wumpus_node.distribution])
+                stench_nodes[(x, y)] = Node(cpt, name=f"Stench_{x}{y}")
+
+        self.wumpus_stench_model = BayesianNetwork("Wumpus-Stench Model")
+        self.wumpus_stench_model.add_node(self.wumpus_node)
+        for n in stench_nodes.values():
+            self.wumpus_stench_model.add_node(n)
+
+        for (x, y), n in stench_nodes.items():
+            self.wumpus_stench_model.add_edge(self.wumpus_node, n)
+
+        self.wumpus_stench_model.bake()
+        self.stench_nodes = stench_nodes
+
+    # ------------------------------------------------------------
+    # PART 3 — PERCEPT UPDATE + INFERENCE
+    # ------------------------------------------------------------
+    def update_with_percept(self, percept):
+        stench, breeze, glitter, bump, scream, reward = percept
+        cell = self.current_position
+
+        self.visited.add(cell)
+        self.breeze_map[cell] = breeze
+        self.stench_map[cell] = stench
+
+        if scream:
+            self._kill_wumpus()
+
+        self._infer_pits()
+        self._infer_wumpus()
+        self._update_safe_and_frontier()
+
+    def _infer_pits(self):
+        evidence = {}
+        for (x, y), v in self.breeze_map.items():
+            evidence[f"Breeze_{x}{y}"] = "T" if v else "F"
+
+        try:
+            post = self.pit_breeze_model.predict_proba(evidence)
+        except:
+            return
+
+        for x in range(self.width):
+            for y in range(self.height):
+                idx = self.pit_breeze_model.nodes.index(self.pit_nodes[(x, y)])
+                dist = post[idx]
+                if isinstance(dist, DiscreteDistribution):
+                    self.pit_probs[(x, y)] = dist.prob("T")
+
+    def _infer_wumpus(self):
+        if not self.wumpus_alive:
+            for c in self.wumpus_probs:
+                self.wumpus_probs[c] = 0.0
+            return
+
+        evidence = {}
+        for (x, y), v in self.stench_map.items():
+            evidence[f"Stench_{x}{y}"] = "T" if v else "F"
+
+        try:
+            post = self.wumpus_stench_model.predict_proba(evidence)
+        except:
+            return
+
+        idx = self.wumpus_stench_model.nodes.index(self.wumpus_node)
+        dist = post[idx]
+
+        if isinstance(dist, DiscreteDistribution):
+            for key, prob in dist.items():
+                wx, wy = map(int, key.split(","))
+                self.wumpus_probs[(wx, wy)] = prob
+
+    def _update_safe_and_frontier(self):
+        for cell in self.pit_probs:
+            if self.pit_probs[cell] == 0.0 and self.wumpus_probs[cell] == 0.0:
+                self.known_safe.add(cell)
+
+            if cell not in self.visited:
+                self.frontier.add(cell)
+
+        self.frontier -= self.known_safe
+
+    def _kill_wumpus(self):
+        self.wumpus_alive = False
+        for c in self.wumpus_probs:
+            self.wumpus_probs[c] = 0.0
+
+    # ------------------------------------------------------------
+    # PART 4 — RISK & ACTION SELECTION
+    # ------------------------------------------------------------
+    def cell_danger(self, c):
+        return 1 - ((1 - self.pit_probs[c]) * (1 - self.wumpus_probs[c]))
+
+    def bfs_distance(self, start, goal):
+        queue = deque([(start, 0)])
+        visited = set([start])
+
+        while queue:
+            pos, d = queue.popleft()
+            if pos == goal:
+                return d
+
+            for adj in self.adjacent(pos):
+                if adj not in visited:
+                    visited.add(adj)
+                    queue.append((adj, d + 1))
+
+        return None
+
+    def choose_target_cell(self):
+        if not self.frontier:
+            return None
+
+        scored = []
+        for c in self.frontier:
+            d = self.bfs_distance(self.current_position, c)
+            if d is None:
+                continue
+            scored.append((self.cell_danger(c), d, c))
+
+        if not scored:
+            return None
+
+        scored.sort()
+        return scored[0][2]
+
+    def plan_path_to(self, target, threshold=0.35):
+        queue = deque([(self.current_position, [])])
+        visited = set([self.current_position])
+
+        while queue:
+            pos, path = queue.popleft()
+            if pos == target:
+                return path
+
+            for adj in self.adjacent(pos):
+                if adj not in visited and (
+                    adj in self.known_safe or self.cell_danger(adj) < threshold
+                ):
+                    visited.add(adj)
+                    queue.append((adj, path + [adj]))
+
+        return None
+
+    def rotate_toward(self, direction):
+        dirs = ["UP", "RIGHT", "DOWN", "LEFT"]
+        i = dirs.index(self.current_direction)
+        j = dirs.index(direction)
+
+        if (i + 1) % 4 == j:
+            self.current_direction = direction
+            return "TurnRight"
+        if (i - 1) % 4 == j:
+            self.current_direction = direction
+            return "TurnLeft"
+
+        self.current_direction = dirs[(i + 2) % 4]
+        return "TurnRight"
+
+    def translate_path_to_actions(self, path):
+        actions = []
+        dirs = ["UP", "RIGHT", "DOWN", "LEFT"]
+        x, y = self.current_position
+        direction = self.current_direction
+
+        for nx, ny in path:
+            dx, dy = nx - x, ny - y
+            if dx == 1: desired = "RIGHT"
+            elif dx == -1: desired = "LEFT"
+            elif dy == 1: desired = "UP"
+            else: desired = "DOWN"
+
+            while direction != desired:
+                actions.append("TurnRight")
+                direction = dirs[(dirs.index(direction) + 1) % 4]
+
+            actions.append("Forward")
+            x, y = nx, ny
+
+        return actions
+
+    def risky_move(self):
+        adj = self.adjacent(self.current_position)
+        adj.sort(key=lambda c: self.cell_danger(c))
+        path = [adj[0]]
+        self.plan = self.translate_path_to_actions(path)
+        return self.plan.pop(0)
+
+    # ------------------------------------------------------------
+    # MAIN AGENT LOGIC
+    # ------------------------------------------------------------
+    def act(self, percept):
+        stench, breeze, glitter, bump, scream, reward = percept
+
+        self.update_with_percept(percept)
+
+        if glitter and not self.has_gold:
+            self.has_gold = True
+            return "Grab"
+
+        if self.has_gold and self.current_position == (0, 0):
+            return "Climb"
+
+        target = self.choose_target_cell()
+        if target is None:
+            target = (0, 0)
+
+        danger = self.cell_danger(target)
+
+        if danger > self.abort_threshold:
+            if self.current_position == (0, 0):
+                return "Climb"
+            target = (0, 0)
+
+        path = self.plan_path_to(target)
+        if not path:
+            return self.risky_move()
+
+        self.plan = self.translate_path_to_actions(path)
+        return self.plan.pop(0)
