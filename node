@@ -1,0 +1,4 @@
+from pomegranate import Node, DiscreteDistribution
+
+test = Node(DiscreteDistribution({"T": 0.5, "F": 0.5}), name="Test")
+print("Pomegranate Node created successfully!")
