@@ -1,0 +1,123 @@
+from pomegranate import *
+import itertools
+
+class ProbAgent(MovePlanningAgent):
+
+    # PART 1 code already added above...
+    # Now continue with Part 2 below:
+
+    # ------------------------------------------------------------
+    # PART 2 — BAYESIAN NETWORK CONSTRUCTION (4×4 fixed)
+    # ------------------------------------------------------------
+    def build_bayesian_models(self):
+        """Builds the Pit–Breeze and Wumpus–Stench Bayesian Networks."""
+
+        # ============================================================
+        # 1. PIT–BREEZE MODEL
+        # ============================================================
+
+        # Create pit nodes (boolean)
+        pit_nodes = {}
+        for x in range(self.width):
+            for y in range(self.height):
+                name = f"Pit_{x}{y}"
+                prior = 0.2 if (x, y) != (0, 0) else 0.0
+                pit_nodes[(x, y)] = Node(DiscreteDistribution({"T": prior, "F": 1 - prior}), name)
+
+        # Create breeze CPTs
+        breeze_nodes = {}
+        for x in range(self.width):
+            for y in range(self.height):
+                adj = self.adjacent((x, y))
+                parents = [f"Pit_{a[0]}{a[1]}" for a in adj]
+
+                # Noisy OR: Breeze = True if ANY adjacent pit = True
+                table = []
+
+                for config in itertools.product(["T", "F"], repeat=len(parents)):
+                    hasPit = "T" in config
+                    breeze_val = "T" if hasPit else "F"
+                    prob = 1.0  # deterministic OR
+                    table.append(list(config) + ["T", 1.0 if breeze_val == "T" else 0.0])
+                    table.append(list(config) + ["F", 1.0 if breeze_val == "F" else 0.0])
+
+                cpt = ConditionalProbabilityTable(table, [pit_nodes[a].distribution for a in adj])
+
+                breeze_nodes[(x, y)] = Node(cpt, name=f"Breeze_{x}{y}")
+
+        # Build full Pit–Breeze BN
+        self.pit_breeze_model = BayesianNetwork("Pit-Breeze Model")
+
+        for node in pit_nodes.values():
+            self.pit_breeze_model.add_node(node)
+        for node in breeze_nodes.values():
+            self.pit_breeze_model.add_node(node)
+
+        for x in range(self.width):
+            for y in range(self.height):
+                cell = (x, y)
+                for adj in self.adjacent(cell):
+                    self.pit_breeze_model.add_edge(pit_nodes[adj], breeze_nodes[cell])
+
+        self.pit_breeze_model.bake()
+
+        # Store references
+        self.pit_nodes = pit_nodes
+        self.breeze_nodes = breeze_nodes
+
+        # ============================================================
+        # 2. WUMPUS–STENCH MODEL
+        # ============================================================
+
+        # Single variable representing Wumpus location among 16 cells
+        states = []
+        for x in range(self.width):
+            for y in range(self.height):
+                if (x, y) != (0, 0):
+                    states.append(f"{x},{y}")
+
+        uniform = 1.0 / len(states)
+
+        wumpus_dist = DiscreteDistribution({
+            state: uniform for state in states
+        })
+
+        self.wumpus_node = Node(wumpus_dist, name="WumpusLocation")
+
+        # Create stench nodes
+        stench_nodes = {}
+
+        for x in range(self.width):
+            for y in range(self.height):
+                # For each possible Wumpus location, determine if stench is true
+                table = []
+                for loc in states:
+                    wx, wy = map(int, loc.split(","))
+
+                    # Wumpus causes stench at same or adjacent cell
+                    is_stench = ((x, y) == (wx, wy) or (x, y) in self.adjacent((wx, wy)))
+
+                    table.append([loc, "T", 1.0 if is_stench else 0.0])
+                    table.append([loc, "F", 1.0 if not is_stench else 0.0])
+
+                cpt = ConditionalProbabilityTable(table, [self.wumpus_node.distribution])
+                stench_nodes[(x, y)] = Node(cpt, name=f"Stench_{x}{y}")
+
+        # Build Wumpus–Stench BN
+        self.wumpus_stench_model = BayesianNetwork("Wumpus-Stench Model")
+
+        # Add nodes
+        self.wumpus_stench_model.add_node(self.wumpus_node)
+        for node in stench_nodes.values():
+            self.wumpus_stench_model.add_node(node)
+
+        # Add edges
+        for (x, y), node in stench_nodes.items():
+            self.wumpus_stench_model.add_edge(self.wumpus_node, node)
+
+        self.wumpus_stench_model.bake()
+
+        # Store
+        self.stench_nodes = stench_nodes
+
+        print("Bayesian networks successfully built.")
