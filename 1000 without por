@@ -1,0 +1,60 @@
+# ==========================================================
+# 1000-GAME SIMULATION FOR NO-POMEGRANATE ProbAgent
+# ==========================================================
+
+def run_game(env, agent):
+    """Runs one full game and returns final score, gold status, and alive flag."""
+    
+    percept = env.reset()                    # reset world
+    agent.__init__(env.width, env.height)    # reset agent's memory
+
+    while not env.game_over:
+        action = agent.act(percept)          # agent decides action
+        percept = env.step(action)           # environment executes action
+
+        # sync agent's physical state with environment
+        agent.update_agent_state(env.agent_position, env.agent_direction)
+
+    return env.score, env.agent_has_gold, env.agent_alive
+
+
+def evaluate_agent(num_games=1000, width=4, height=4):
+    total_score = 0
+    wins = 0
+    deaths = 0
+    quits = 0
+
+    for i in range(num_games):
+        env = Environment(width, height)
+        agent = ProbAgent(width, height)
+
+        score, got_gold, alive = run_game(env, agent)
+        total_score += score
+
+        # categorize result
+        if got_gold and env.game_over:
+            wins += 1
+        elif not alive:
+            deaths += 1
+        else:
+            quits += 1
+
+        # progress indicator
+        if (i + 1) % 50 == 0:
+            print(f"Completed {i+1}/{num_games} games...")
+
+    avg_score = total_score / num_games
+    return avg_score, wins, deaths, quits
+
+
+# RUN EVALUATION
+avg, wins, deaths, quits = evaluate_agent(1000)
+
+print("\n===========================================")
+print("       ProbAgent Evaluation (1000 Games)    ")
+print("===========================================")
+print(f"Average Score:  {avg:.2f}")
+print(f"Wins:           {wins}")
+print(f"Deaths:         {deaths}")
+print(f"Quits:          {quits}")
+print("===========================================")
