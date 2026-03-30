@@ -1,3 +1,67 @@
+# JUPYTER NOTEBOOK EVALUATION: 1000 GAMES
+
+def run_game(env, agent):
+    """Runs one full Wumpus World episode and returns final score."""
+    percept = env.reset()
+    agent.__init__(env.width, env.height)   # reset agent internal state
+
+    while not env.game_over:
+        action = agent.act(percept)
+        percept = env.step(action)
+
+        # Update agent position/direction
+        agent.update_agent_state(env.agent_position, env.agent_direction)
+
+    return env.score, env.agent_has_gold, env.agent_alive
+
+
+def evaluate_agent(num_games=1000, width=4, height=4):
+    total_score = 0
+    wins = 0
+    deaths = 0
+    quits = 0
+
+    for i in range(num_games):
+        env = Environment(width, height)
+        agent = ProbAgent(width, height)
+
+        score, has_gold, alive = run_game(env, agent)
+        total_score += score
+
+        # Stats
+        if has_gold and env.game_over:
+            wins += 1
+        elif not alive:
+            deaths += 1
+        else:
+            quits += 1
+
+        if (i + 1) % 50 == 0:
+            print(f"Completed {i+1}/{num_games} games...")
+
+    avg_score = total_score / num_games
+    return avg_score, wins, deaths, quits
+
+
+# ---- RUN SIMULATION ----
+avg, wins, deaths, quits = evaluate_agent(1000)
+
+print("\n========================================")
+print("   ProbAgent Evaluation (1000 Games)    ")
+print("========================================")
+print(f"Average Score: {avg:.2f}")
+print(f"Wins:          {wins}")
+print(f"Deaths:        {deaths}")
+print(f"Quits:         {quits}")
+print("========================================\n")
+
+
+
+
+
+
+
+
 from environment import Environment     # your updated Environment
 from prob_agent import ProbAgent        # the full ProbAgent from Part 5
 
