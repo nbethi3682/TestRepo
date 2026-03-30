@@ -1,0 +1,63 @@
+from environment import Environment     # your updated Environment
+from prob_agent import ProbAgent        # the full ProbAgent from Part 5
+
+def run_game(env, agent):
+    """Runs one game and returns final score."""
+    percept = env.reset()
+    agent.__init__(env.width, env.height)  # reset agent internal state
+
+    while not env.game_over:
+        # Agent decides action
+        action = agent.act(percept)
+
+        # Environment executes action
+        percept = env.step(action)
+
+        # Update agent internal position/direction
+        agent.update_agent_state(
+            env.agent_position,
+            env.agent_direction
+        )
+
+    return env.score
+
+
+def evaluate_agent(num_games=1000, width=4, height=4):
+    total_score = 0
+    wins = 0
+    deaths = 0
+    quits = 0
+
+    for i in range(num_games):
+        env = Environment(width, height)
+        agent = ProbAgent(width, height)
+
+        score = run_game(env, agent)
+        total_score += score
+
+        # Track stats
+        if env.agent_has_gold and env.game_over:
+            wins += 1
+        elif not env.agent_alive:
+            deaths += 1
+        else:
+            quits += 1
+
+        if (i + 1) % 50 == 0:
+            print(f"Completed {i+1}/{num_games} games...")
+
+    avg_score = total_score / num_games
+    return avg_score, wins, deaths, quits
+
+
+if __name__ == "__main__":
+    avg, wins, deaths, quits = evaluate_agent()
+
+    print("\n===========================================")
+    print("      ProbAgent Evaluation (1000 Games)     ")
+    print("===========================================")
+    print(f"Average Score: {avg:.2f}")
+    print(f"Total Wins:    {wins}")
+    print(f"Total Deaths:  {deaths}")
+    print(f"Total Quits:   {quits}")
+    print("===========================================\n")
