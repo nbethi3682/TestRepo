@@ -1,0 +1,160 @@
+Notes
+
+Slide 1 – Title Slide
+AI‑Driven Investment Advisor Using CSP, MPT & LLMs
+Presented by: [Your Name]
+Course / Institution
+
+Speaker Notes:
+“Welcome everyone. Today I will present an AI‑Driven Investment Advisor that combines multiple AI and quantitative techniques—including Constraint Satisfaction Problem solving, Modern Portfolio Theory, covariance‑based risk analysis, and Large Language Models—to generate optimized and explainable investment portfolios. This system automates the entire investment planning process, from data collection to portfolio optimization and explanation.”
+
+Slide 2 – Abstract
+
+Personalized AI investment advisor
+Uses CSP + MPT + covariance‑based risk modeling
+Live market data from yfinance
+LLM-generated explanations for transparency
+Produces optimized, constraint-compliant portfolios
+
+
+Speaker Notes:
+“This slide summarizes the project. The advisor analyzes a user’s financial profile, filters valid portfolios using CSP, optimizes them using Modern Portfolio Theory, and evaluates risk via covariance. Real-time market data ensures accurate recommendations, while the LLM generates human-friendly explanations.”
+
+Slide 3 – Introduction
+Investment Challenges
+
+Manual investing is slow, biased, and complex
+Hard for beginners to analyze financial data
+Market volatility increases uncertainty
+
+AI Benefits
+
+Automates data analysis
+Reduces human bias
+Improves risk–return evaluation
+
+
+Speaker Notes:
+“Investors face many challenges—huge data volumes, volatility, and emotional decision-making. AI helps by analyzing data consistently, eliminating bias, and producing optimized strategies personalized to the user.”
+
+Slide 4 – Problem Statement
+
+Traditional investing = limited accuracy
+Hard to evaluate risk-return trade-offs manually
+Investors lack tools for real-time data analysis
+Need for automated, data-driven financial advisory
+
+
+Speaker Notes:
+“The core problem is that traditional investment planning is inefficient and unable to keep up with real-time market data. Many investors rely on guesswork or outdated methods. This system aims to solve these issues.”
+
+Slide 5 – System Overview
+
+Full‑stack AI investment platform
+Frontend collects user financial inputs
+FastAPI backend processes constraints
+Investment Engine (CSP + MPT + Covariance)
+Real-time yfinance data
+LLM-generated explanations
+
+
+Speaker Notes:
+“This is a high-level overview. The user interacts through a web interface. The backend receives their financial profile, runs CSP to filter valid allocations, optimizes them statistically via MPT, and analyzes correlations. Finally, the LLM explains the portfolio in simple language.”
+
+Slide 6 – System Architecture
+Three-Layer Architecture
+
+Frontend – Form inputs, visualization
+Backend (FastAPI) – Routing & processing
+Investment Engine
+
+CSP for feasibility
+MPT for optimization
+Covariance for risk modeling
+
+
+
+External Integrations
+
+yfinance for market data
+OpenAI for explanations
+
+
+Speaker Notes:
+“The architecture follows a modular layered design. Each layer—frontend, backend, investment engine—handles a clear responsibility. This improves maintainability and scalability. External APIs add real-time data and natural-language explanations.”
+
+Slide 7 – Methodology
+1. CSP Filtering
+Validates assets against constraints:
+
+Age
+Income
+Risk tolerance
+Allocation limits
+
+2. MPT Optimization
+
+Expected returns
+Volatility
+Sharpe Ratio
+
+3. Covariance Risk Modeling
+
+Captures correlations
+Improves diversification
+
+4. Live Market Data + LLM
+
+Speaker Notes:
+“The system follows a pipeline. First, CSP eliminates invalid portfolios. Then MPT finds statistically optimal ones. The covariance matrix measures risk accurately by analyzing relationships between assets. Finally, live data and LLM explanations enhance usability.”
+
+Slide 8 – System Modules
+
+User Input Module – collects financial info
+Data Processing Module – cleans and validates
+CSP Module – constraint filtering
+Optimization Module – MPT + Sharpe ratio
+Market Data Module – live yfinance fetch
+Output Module – AI-explained portfolio
+
+
+Speaker Notes:
+“These modules work together to create a full AI pipeline. Each module is isolated so it can be improved or extended independently—making the system highly modular.”
+
+Slide 9 – Results & Advantages
+Results
+
+Generates optimized, personalized portfolios
+Uses real-time market data
+Provides explainable AI financial insights
+
+Advantages
+
+Reduces bias
+Automates complex calculations
+Improves investment accessibility
+Enhances decision accuracy and confidence
+
+
+Speaker Notes:
+“The system delivers optimized and data-driven portfolios. Real-time data increases accuracy. The LLM adds transparency, helping users understand why the portfolio was chosen.”
+
+Slide 10 – Conclusion & Future Work
+Conclusion
+
+AI + quantitative finance = powerful investment planning
+CSP ensures feasibility
+MPT + covariance ensures efficiency
+LLM improves interpretability
+
+Future Enhancements
+
+Deep learning market prediction
+Mobile app
+Automated trading integration
+Portfolio backtesting
+Conversational financial assistant
+
+
+Speaker Notes:
+“In conclusion, this system demonstrates how combining AI, optimization, and statistical modeling can transform investment planning. Future improvements—like deep learning prediction models and trading API integration—can elevate the advisor even further.”
