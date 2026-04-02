@@ -1,0 +1,70 @@
+Professional Summary
+Response Specialist Advisor with experience in analyzing data, solving complex problems, and 
+improving processes, now transitioning into Data Science & AI. Skilled in Python, Machine 
+Learning, and Deep Learning, developing data-driven solutions that generate actionable insights 
+and measurable business impact. 
+Skills
+• Programming: Develop and analyze data workflows using Python and SQL 
+• Data Analysis & Statistics: Perform Exploratory Data Analysis (EDA), conduct hypothesis 
+testing (t-test, Chi-square, ANOVA), and apply statistical modeling to support data-driven 
+decisions 
+• Machine Learning: Build and evaluate regression and classification models using Logistic 
+Regression, Random Forest, and Gradient Boosting 
+• Deep Learning: Design and optimize neural network models and handle class imbalance 
+in predictive modeling 
+• Libraries & Frameworks: Analyze and manipulate datasets using Pandas, NumPy, Scikit
+learn, and create visualizations with Matplotlib 
+• Big Data: Process large-scale datasets using Apache Spark, PySpark, and Databricks 
+• Visualization: Create data visualizations and dashboards using Power BI, Excel, and 
+Matplotlib 
+• Tools:  Manage code and collaborate using Git, GitHub, and Jupyter Notebook 
+• Soft Skills: Apply analytical thinking, problem solving, communication, collaboration, and 
+adaptability in team and project environments 
+Projects 
+1. Credit Card Default Prediction | Deep Learning 
+Technologies: Python, Pandas, NumPy, Scikit-learn, TensorFlow/Keras, Matplotlib, Seaborn, 
+Jupyter Notebook 
+• Built a FCNN with BatchNorm & Dropout to predict credit card defaults, handling 
+imbalanced data with class weights and threshold optimization (0.55). 
+• Engineered behavioral features like repayment trends, delay acceleration, and payment 
+variability. 
+• Performance: Accuracy 0.80, Precision 0.56, Recall 0.54, F1-score 0.55. 
+Business Impact: Early identification of high-risk customers, reducing financial losses and 
+supporting credit risk management. 
+2. Online Shopper Purchase Prediction | Machine Learning 
+Technologies: Python, Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, SMOTE, Logistic 
+Regression, Random Forest, Gradient Boosting 
+• Developed models to predict purchase intent for 12,330 online sessions, performing 
+EDA and statistical testing to identify key predictors (PageValues, BounceRates, 
+ExitRates). 
+• Addressed class imbalance with SMOTE; Gradient Boosting achieved 89% accuracy 
+and 0.93 AUC. 
+• Feature importance analysis highlighted PageValues as the strongest predictor. 
+Business Impact: Enables e-commerce businesses to identify high-intent customers and 
+optimize marketing strategies for higher conversion. 
+Experience 
+ 
+Response Specialist – Advisor II,  
+Concentrix, Toronto | Jan 2021 – July 2022 
+ 
+• Provided multi-channel customer support via calls, email, and chat. 
+• Handled emergency and crisis calls with professionalism and empathy. 
+• Maintained accurate records using CRM systems. 
+• Assisted with billing, product, and technical issues. 
+• Escalated complex cases when needed. 
+ 
+Education & Training
+ 
+Data Science and AI Upskilling Program | Sep 2025 - April 2026 
+University of Toronto 
+ 
+Bachelor of Engineering: Computer Science | July 2013 - Oct 2017 
+Jawaharlal Nehru Technological University            
+ 
+Portfolio 
+ 
+GitHub: https://github.com/Vangala09 
+Projects include: 
+• Credit Card Default Prediction using Deep Learning 
+• Online Shopper Purchase Prediction using Machine Learning 
+• Traffic Volume Forecasting using Apache Spark 
