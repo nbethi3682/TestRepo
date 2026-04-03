@@ -1,0 +1,253 @@
+ ONLINE SHOPPER PURCHASE INTENT
+
+Q1. Can you briefly explain your project?
+I worked on a machine learning project to predict whether an online shopping session would result in a purchase. I used the UCI Online Shoppers Purchasing Intention dataset, which has over 12,000 real user sessions with behavioral, temporal, and technical features.
+After data cleaning and exploratory analysis, I found a strong class imbalance — only about 15% of sessions resulted in purchases — so I handled this using SMOTE. EDA and statistical tests showed that behavioral features like PageValues, product views, bounce rate, exit rate, and weekend visits had the biggest impact on purchases.
+I built and compared Logistic Regression, Random Forest, and Gradient Boosting models. Gradient Boosting performed best, achieving 89% accuracy and a ROC‑AUC of 0.93, with strong recall for buyers. Feature importance analysis showed that PageValues was by far the strongest predictor, while technical features like browser or OS mattered very little.
+The key takeaway is that user engagement during a session is much more important than technical attributes for predicting purchases. This model can be used to identify high‑intent users in real time and improve marketing and conversion strategies.
+
+Q2. What business problem does this project solve?
+Best Answer:
+
+It helps e‑commerce businesses identify high‑intent users in real time, optimize marketing spend, personalize user experiences, and improve conversion rates.
+Instead of relying on demographic or technical data, the model focuses on actual user behavior during a session.
+
+
+2️⃣ DATA & PREPROCESSING
+Q3. Tell me about the dataset.
+Best Answer:
+
+The dataset has 12,330 rows and 18 features, each representing a single online session.
+Features include:
+
+Behavioral metrics (PageValues, ExitRates, BounceRates)
+Engagement metrics (ProductRelated pages and duration)
+Temporal features (Month, Weekend)
+Technical features (Browser, OS, Region)
+
+The target variable is Revenue, a binary indicator of purchase.
+
+
+Q4. How did you handle missing values?
+Best Answer:
+
+The dataset had no missing values, so no imputation was needed. However, I still validated data consistency and distributions before modeling.
+
+
+Q5. How did you encode categorical variables?
+Best Answer:
+
+
+Binary variables (Weekend, Revenue) were encoded as 0/1
+VisitorType was label‑encoded
+Month was ordinally encoded based on calendar order
+For modeling, categorical variables were handled using OneHotEncoder with handle_unknown='ignore' inside a pipeline
+
+
+
+Q6. Why did you scale the data?
+Best Answer:
+
+I used StandardScaler for numerical features because algorithms like Logistic Regression rely on distance‑based optimization. Scaling prevents features with larger values from dominating the learning process.
+
+
+3️⃣ EXPLORATORY DATA ANALYSIS (EDA)
+Q7. What were the key findings from EDA?
+Best Answer:
+
+
+Severe class imbalance: Only 15.47% of sessions resulted in purchases
+PageValues showed the strongest correlation with Revenue (0.49)
+BounceRates and ExitRates were negatively correlated with purchases
+Buyers viewed significantly more product pages and stayed longer
+Weekend visits had statistically significant different purchase behavior
+
+
+
+Q8. Why is PageValues such a strong predictor?
+Best Answer:
+
+PageValues represent the estimated monetary value of pages visited, including checkout or cart pages.
+High PageValues indicate that a user reached high‑intent pages, making it a direct proxy for purchase intent.
+
+
+Q9. What does skewness in features mean and how did you handle it?
+Best Answer:
+
+Many behavioral features were highly right‑skewed, meaning most users had low values while a small number had extremely high engagement.
+Tree‑based models naturally handle skewness well, while scaling helped stabilize Logistic Regression.
+
+
+4️⃣ CLASS IMBALANCE
+Q10. Why was class imbalance a problem?
+Best Answer:
+
+Since most users didn’t purchase, a model could achieve high accuracy by predicting “no purchase” for everyone.
+This would be useless for identifying buyers, which is the real business goal.
+
+
+Q11. Why did you use SMOTE?
+Best Answer:
+
+SMOTE synthetically generates new minority‑class samples rather than duplicating existing ones.
+This helps the model learn decision boundaries better and improves recall for buyers.
+
+
+Q12. Why didn’t you use accuracy alone?
+Best Answer:
+
+Accuracy is misleading for imbalanced data.
+I focused on ROC‑AUC, precision, recall, and F1‑score, especially recall for buyers, because missing a buyer is more costly than misclassifying a non‑buyer.
+
+
+5️⃣ STATISTICAL TESTING
+Q13. Why did you perform hypothesis testing?
+Best Answer:
+
+Statistical tests validate whether observed differences are real and not due to random chance, strengthening trust in EDA findings.
+
+
+Q14. Explain the Chi‑Square test you performed.
+Best Answer:
+
+I used a Chi‑Square test of independence to examine whether purchases depend on weekend vs weekday visits.
+Since the p‑value was 0.001, I rejected the null hypothesis and concluded that visit timing significantly affects purchasing behavior.
+
+
+Q15. Explain the t‑test on bounce rate.
+Best Answer:
+
+I used a two‑sample t‑test to compare bounce rates between buyers and non‑buyers.
+The extremely small p‑value confirmed that buyers have significantly lower bounce rates, indicating stronger engagement.
+
+
+6️⃣ MODELING QUESTIONS
+Q16. Why did you use Logistic Regression as a baseline?
+Best Answer:
+
+Logistic Regression is simple, interpretable, and provides a strong baseline.
+It helps measure how much improvement more complex models deliver.
+
+
+Q17. Explain the Random Forest model.
+Best Answer:
+
+Random Forest uses multiple decision trees trained on random subsets of data and features.
+This reduces overfitting and captures non‑linear relationships effectively.
+
+
+Q18. Why did Gradient Boosting perform best?
+Best Answer:
+
+Gradient Boosting builds trees sequentially, learning from previous errors.
+It captures complex patterns better and achieved the best balance between precision and recall for buyers, with AUC 0.93.
+
+
+Q19. Compare all three models.
+Best Answer:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ModelAccuracyROC‑AUCBuyer RecallLogistic Regression85%0.860.69Random Forest88%0.920.76Gradient Boosting89%0.930.73
+
+Gradient Boosting offered the best overall performance and precision‑recall balance.
+
+
+7️⃣ EVALUATION METRICS
+Q20. What does ROC‑AUC mean?
+Best Answer:
+
+ROC‑AUC measures how well the model separates buyers from non‑buyers across all thresholds.
+A value closer to 1 means stronger class discrimination.
+
+
+Q21. Precision vs Recall – which matters more here?
+Best Answer:
+
+Recall matters more because missing a potential buyer leads to lost revenue.
+Some false positives are acceptable in marketing scenarios.
+
+
+8️⃣ FEATURE IMPORTANCE & INTERPRETABILITY
+Q22. What did feature importance reveal?
+Best Answer:
+
+PageValues overwhelmingly dominated feature importance, followed by Month.
+Technical features like Browser or OS contributed very little, confirming that user behavior matters more than device attributes.
+
+
+Q23. Why is multicollinearity important?
+Best Answer:
+
+Highly correlated features like BounceRates and ExitRates can distort coefficient interpretation in linear models, but tree‑based models handle them well.
+
+
+9️⃣ BUSINESS IMPACT
+Q24. How can this be used in production?
+Best Answer:
+
+
+Real‑time user scoring for personalization
+Targeted discounts for high‑intent users
+Page optimization for high exit rates
+Marketing budget prioritization
+
+
+
+Q25. If you were a product manager, what action would you take?
+Best Answer:
+
+Focus optimization on high PageValue pages, reduce bounce rates early in sessions, and run A/B tests on product page layouts to increase engagement.
+
+
+🔮 FUTURE IMPROVEMENTS QUESTIONS
+Q26. How would you improve this model?
+Best Answer:
+
+
+Add user‑level historical behavior
+Use XGBoost / LightGBM
+Probability calibration
+Online A/B testing integration
+Real‑time inference pipeline
+
+ FINAL GOLDEN ANSWER (Closing)
+Q27. What is the key takeaway from your project?
+Best Answer:
+
+User behavior during a session is far more predictive of purchases than technical or demographic features.
+By focusing on engagement signals, businesses can significantly improve conversion strategies.
+
+Q28) Explain This to a Non‑Technical Manager”
+
+This project helps answer a simple business question: “Which website visitors are most likely to make a purchase?”
+We analyzed how customers behave during online visits — what pages they view, how long they stay, whether they leave quickly, and when they visit. What we found is that how users behave on the website matters far more than what device or browser they use.
+For example, users who spend more time on product and checkout‑related pages, and who don’t leave quickly, are much more likely to buy. Our model learns these patterns and assigns a likelihood of purchase to each session.
+The final model correctly identifies high‑intent customers with very high accuracy, which means the business can focus promotions, discounts, or personalized content on users who are most likely to convert — instead of spending money on low‑intent traffic.
+In short, this helps increase conversion rates, reduce wasted marketing spend, and improve customer experience by targeting the right users at the right time.
