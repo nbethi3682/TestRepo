@@ -263,3 +263,11 @@ Speech recognition
 NLP (chatbots, translation)
 Autonomous driving
 Medical imaging
+
+Q46. How did you make sure your engineered features did not cause data leakage?”
+“All engineered features were calculated strictly using historical repayment data available before the prediction window. No future payment information was used in training, ensuring the model reflects real-world decision timing.
+
+Q47. How did you split the data?
+I used a stratified train–test split so the default rate was consistent across datasets, ensuring reliable evaluation.
+
+
