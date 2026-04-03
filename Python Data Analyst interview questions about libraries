@@ -1,0 +1,252 @@
+1. What are the most important Python libraries for a Data Analyst?
+Best answer:
+
+The core Python libraries for data analysis are:
+
+
+NumPy – for numerical computing and arrays
+Pandas – for data manipulation and analysis
+Matplotlib & Seaborn – for data visualization
+SciPy – for scientific and statistical computations
+Scikit-learn – for machine learning and preprocessing
+Statsmodels – for statistical modeling and hypothesis testing
+
+Together, these libraries support the full lifecycle of data analysis: from cleaning to visualization to modeling.
+
+2. What is Pandas and why is it important?
+Best answer:
+
+Pandas is a high-level data manipulation library built on NumPy.
+It provides DataFrame and Series data structures that allow efficient handling of structured data, such as CSV, Excel, SQL, and JSON files.
+
+Key advantages:
+
+Easy data cleaning and transformation
+Powerful indexing and filtering
+Built-in aggregation and group-by operations
+Time-series support
+
+Pandas significantly reduces the amount of code needed compared to pure Python.
+
+3. Difference between NumPy and Pandas?
+Best answer:
+NumPy is faster for mathematical operations, while Pandas is more flexible and user-friendly for analyzing real-world datasets.
+
+4. What is a DataFrame?
+Best answer:
+
+A DataFrame is a 2-dimensional labeled data structure in Pandas, similar to a table in SQL or an Excel worksheet.
+It supports:
+Multiple data types
+Named rows and columns
+Easy filtering, sorting, and aggregation
+import pandas as pd
+EX: df = pd.DataFrame({"Name": ["A", "B"], "Age": [25, 30]})
+
+5. How do you handle missing values in Pandas?
+Best answer:
+Missing values are commonly handled using:
+isnull() / notnull() to detect
+dropna() to remove rows or columns
+fillna() to replace with mean, median, or custom values
+EX: df.fillna(df.mean(), inplace=True)
+
+6. What is GroupBy in Pandas?
+Best answer:
+groupby() is used to split data into groups based on a column, apply aggregations, and combine results.
+Example: df.groupby("Department")["Salary"].mean()
+
+7. Difference between Matplotlib and Seaborn?
+Best answer:
+Matplotlib is a low-level plotting library that offers full control over visualizations.
+Seaborn is built on top of Matplotlib and provides high-level, statistical visualizations with better default styling.
+Use Matplotlib for customization
+Use Seaborn for quick insights and statistical plots
+
+
+8. What types of plots do you commonly use?
+Best answer:
+Common plots include:
+Line plots – trends over time
+Bar charts – category comparison
+Histograms – data distribution
+Box plots – outliers and spread
+Scatter plots – relationships between variables
+Heatmaps – correlation analysis
+
+
+9. What is Scikit-learn used for?
+Best answer:
+Scikit-learn is a machine learning library used for:
+Data preprocessing
+Feature scaling
+Classification and regression
+Clustering
+Model evaluation
+It provides a consistent API and is widely used in production analytics and ML workflows.
+
+10. What is feature scaling and which library supports it?
+Best answer:
+Feature scaling standardizes numerical features so they contribute equally to a model.
+Scikit-learn provides tools such as:
+StandardScaler
+MinMaxScaler
+Example: 
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(data)
+``
+
+11. Difference between Series and DataFrame?
+Best answer:
+A Series is a one-dimensional labeled array, while a DataFrame is two-dimensional with rows and columns.
+A DataFrame is essentially a collection of Series.
+
+12. How do you read data from different file formats?
+Best answer:
+Pandas supports multiple formats:
+pd.read_csv()
+pd.read_excel()
+pd.read_sql()
+pd.read_json()
+
+13. What is a correlation matrix?
+Best answer:
+
+A correlation matrix shows the strength and direction of relationships between numeric variables.
+It is commonly visualized using a heatmap to identify strong correlations and multicollinearity.
+
+
+14. What are efficient practices for large datasets?
+Best answer:
+Best practices include:
+Using efficient data types
+Reading data in chunks
+Filtering early
+Vectorized operations instead of loops
+Using NumPy for heavy computations
+
+
+15. Why is Python preferred for Data Analysis?
+Best answer:
+Python is preferred because of:
+Rich ecosystem of data libraries
+Easy syntax
+Strong community support
+Integration with databases, cloud, and ML frameworks
+Excellent visualization and automation capabilities
+
+What is Feature Engineering?
+Best answer (short & strong):
+
+Feature engineering is the process of selecting, transforming, and creating meaningful input variables (features) from raw data to improve the performance of machine‑learning models.
+
+It directly impacts model accuracy, interpretability, and efficiency and is often more important than the choice of algorithm.
+
+Why is Feature Engineering Important?
+Best answer:
+Most machine learning models do not understand raw data well.
+Feature engineering helps:
+Capture domain knowledge
+Improve model performance
+Reduce noise and redundancy
+Make patterns easier for models to learn
+In practice, good feature engineering can outperform complex models trained on poor features.
+
+Common Feature Engineering Techniques
+1. Handling Missing Values
+Purpose: Prevent data loss or bias
+Techniques:
+
+Mean/median imputation
+Mode for categorical data
+Flagging missing values
+df['age'].fillna(df['age'].median(), inplace=True)
+
+2. Encoding Categorical Variables
+Purpose: Convert categories into numerical form
+Techniques:
+Label Encoding (ordinal data)
+One‑Hot Encoding (nominal data)
+EX: pd.get_dummies(df['gender'])
+
+3. Feature Scaling
+Purpose: Ensure fair contribution of features
+Important for models like:
+Linear Regression
+KNN
+SVM
+
+Techniques:
+Standardization (Z‑score)
+Normalization (Min‑Max)
+
+from sklearn.preprocessing import StandardScaler
+
+4. Creating New Features
+Purpose: Reveal patterns not visible in raw data
+Examples:
+
+Age from date of birth
+Total purchase = price × quantity
+Extracting year, month, day from date
+
+EX: df['purchase_year'] = df['purchase_date'].dt.year
+
+5. Feature Transformation
+Purpose: Normalize skewed data or stabilize variance
+Techniques:
+
+Log transformation
+Square root transformation
+Binning
+
+Example:df['log_salary'] = np.log(df['salary'])
+
+6. Feature Selection
+Purpose: Remove irrelevant or redundant features to avoid overfitting
+Techniques:
+
+Correlation analysis
+Recursive Feature Elimination (RFE)
+Feature importance from models
+
+
+Feature Engineering vs Feature Selection
+Best answer:
+
+Feature engineering creates or transforms features, while feature selection chooses the most important features from the existing ones.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
