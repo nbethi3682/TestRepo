@@ -1,0 +1,299 @@
+1. What is Python?
+Best Response (Interview‑ready):
+Python is a high‑level, interpreted, dynamically typed programming language known for its readability and extensive ecosystem. It’s widely used in data analysis, machine learning, automation, and backend development.
+
+2. Why is Python preferred for data roles?
+Best Response:
+Python is preferred because it has:
+
+Simple syntax → faster development
+Strong libraries like Pandas, NumPy, Matplotlib, Scikit‑learn
+Easy integration with SQL, APIs, and cloud platforms
+Large community and industry adoption
+
+
+3. Is Python compiled or interpreted?
+Best Response:
+Python is interpreted, but internally it compiles source code to bytecode which is executed by the Python Virtual Machine (PVM).
+
+4. What are Python’s data types?
+Best Response:
+
+Numeric: int, float, complex
+Sequence: list, tuple, str
+Mapping: dict
+Set types: set, frozenset
+Boolean: bool
+NoneType: None
+
+
+5. Mutable vs Immutable objects?
+Best Response:
+
+Mutable: Can change after creation → list, dict, set
+Immutable: Cannot change → tuple, string, int
+
+This impacts performance, memory, and function behavior.
+
+6. Difference between list and tuple?
+Best Response:
+
+List → Mutable, slower, uses more memory
+Tuple → Immutable, faster, safer for fixed data
+
+
+7. What is dynamic typing?
+Best Response:
+Python determines variable type at runtime, not during declaration.
+x = 5
+x = "data"
+
+8. What is indentation?
+Best Response:
+Indentation defines code blocks in Python. It replaces curly braces {} used in other languages.
+
+9. What is a function?
+Best Response:
+A reusable block of code that performs a specific task and improves modularity and maintainability.
+
+10. What are default arguments?
+Best Response:
+Arguments with predefined values if not provided.
+def greet(name="User"):
+    print(name)
+
+2. CONTROL FLOW & LOGIC
+
+11. What are conditional statements?
+Best Response:
+Used to make decisions using if, elif, and else.
+
+12. Difference between break, continue, pass?
+Best Response:
+
+break → Exit loop
+continue → Skip iteration
+pass → Placeholder (does nothing)
+
+
+13. What is list comprehension?
+Best Response:
+A concise way to create lists with better performance and readability.
+Python[x*x for x in range(5)]Show more lines
+
+14. What is a lambda function?
+Best Response:
+An anonymous one‑line function used for short operations.
+lambda x: x+1
+
+15. What is recursion?
+Best Response:
+A function calling itself until a base condition is met.
+
+3. PYTHON DATA STRUCTURES (Frequently asked)
+
+16. What is a dictionary?
+Best Response:
+A key‑value pair data structure that allows fast lookups.
+
+17. Can dictionary keys be mutable?
+Best Response:
+No. Keys must be immutable (string, tuple, number).
+
+18. Difference between set and list?
+Best Response:
+
+Set → No duplicates, unordered
+List → Ordered, allows duplicates
+
+
+19. How do you remove duplicates from a list?
+Best Response:list(set(my_list))
+
+20. Shallow copy vs deep copy?
+Best Response:
+
+Shallow copy → references same objects
+Deep copy → copies everything
+
+
+🔹 4. EXCEPTION HANDLING
+
+21. What is exception handling?
+Best Response:
+It prevents program crashes and handles runtime errors gracefully.
+
+22. Difference between error and exception?
+Best Response:
+
+Error → serious issue, cannot handle
+Exception → runtime issue, can be handled
+
+
+23. What is finally?
+Best Response:
+Code inside finally always executes, even if exception occurs.
+
+🔹 5. FILE HANDLING
+
+24. How do you read a file?
+Best Response:
+with open("file.txt") as f:
+    data = f.read()
+
+25. Why use with statement?
+Best Response:
+Automatically closes files and prevents memory leaks.
+
+🔹 6. OOPS IN PYTHON (Important for Data Scientists)
+
+26. What is OOP?
+Best Response:
+Object‑Oriented Programming organizes code using reusable objects and classes.
+
+27. Four pillars of OOPS?
+Best Response:
+
+Encapsulation
+Abstraction
+Inheritance
+Polymorphism
+
+
+28. What is self?
+Best Response:
+Represents the current object instance.
+
+29. What is inheritance?
+Best Response:
+Child class acquiring properties of parent class.
+
+30. What is polymorphism?
+Best Response:
+Same function behaves differently based on object type.
+
+🔹 7. PYTHON FOR DATA ANALYSIS (VERY IMPORTANT)
+
+31. What is NumPy?
+Best Response:
+A library for numerical computing with high‑performance arrays.
+
+32. Why NumPy is faster than lists?
+Best Response:
+It uses contiguous memory and vectorized operations written in C.
+
+33. What is Pandas?
+Best Response:
+A library for data manipulation using DataFrames and Series.
+
+34. DataFrame vs Series?
+Best Response:
+
+Series → 1D
+DataFrame → 2D table
+
+
+35. How to handle missing values?
+Best Response:
+
+Drop (dropna)
+Replace (fillna)
+Impute (mean/median)
+
+
+36. What is groupby?
+Best Response:
+Used to split data, apply aggregation, and combine results.
+
+37. Difference between apply, map, vectorization?
+Best Response:
+
+map → Series only
+apply → row/column operations
+vectorization → fastest, preferred
+
+
+🔹 8. ADVANCED PYTHON (Senior‑level expectations)
+
+38. What is a generator?
+Best Response:
+A memory‑efficient iterator that yields values one at a time.
+
+39. What is GIL?
+Best Response:
+Global Interpreter Lock allows only one thread to execute Python bytecode at a time.
+
+40. Multithreading vs Multiprocessing?
+Best Response:
+
+Multithreading → I/O‑bound tasks
+Multiprocessing → CPU‑bound tasks
+
+
+41. What is decorator?
+Best Response:
+A function that modifies another function’s behavior without changing its code.
+
+42. What is memory management in Python?
+Best Response:
+Python uses automatic garbage collection and reference counting.
+
+43. How do you optimize Python code?
+Best Response:
+
+Use NumPy/Pandas vectorization
+Avoid loops
+Use generators
+Profile with cProfile
+
+
+🔹 9. PYTHON + MACHINE LEARNING (Expected for DS)
+
+44. What is overfitting?
+Best Response:
+Model performs well on training data but poorly on unseen data.
+
+45. Bias vs Variance?
+Best Response:
+
+Bias → underfitting
+Variance → overfitting
+
+
+46. What is train‑test split?
+Best Response:
+Separates data to validate model generalization.
+
+47. Common evaluation metrics?
+Best Response:
+
+Accuracy
+Precision
+Recall
+F1 score
+RMSE
+
+
+48. What is pipeline in sklearn?
+Best Response:
+Automates preprocessing + modeling steps.
+
+🔹 10. REAL INTERVIEW SCENARIOS
+
+49. How Python is used in real data projects?
+Best Response:
+
+Data ingestion
+Cleaning & transformation
+Feature engineering
+Modeling
+Visualization
+Automation
+
+
+50. Difference between Python and R for data?
+Best Response:
+Python is better for production & integration; R is strong for statistical analysis.
+
+
+
