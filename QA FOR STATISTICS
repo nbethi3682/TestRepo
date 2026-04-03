@@ -1,0 +1,68 @@
+ 1. Mean, Median, Mode
+Best Interview Answer:
+Mean is the average of all values, median is the middle value when data is sorted, and mode is the most frequent value.
+Median is preferred when data has outliers, such as income distributions, because it’s more robust than mean.
+📌 Example:
+For salary data, median gives a better central tendency than mean due to extreme high salaries.
+
+✅ 2. Variance & Standard Deviation
+Best Interview Answer:
+Variance measures how spread out data points are from the mean, while standard deviation is the square root of variance and is easier to interpret because it’s in the same unit as data.
+📌 Business Insight:
+Higher standard deviation indicates more volatility or risk.
+
+✅ 3. Probability Basics
+Best Interview Answer:
+Probability measures the likelihood of an event occurring and ranges from 0 to 1. It forms the foundation for statistical inference and machine learning models.
+📌 Example:
+Probability of customer churn helps predict business risk.
+
+✅ 4. Normal Distribution
+Best Interview Answer:
+Normal distribution is a symmetric, bell‑shaped distribution where mean, median, and mode are equal. About 68% of data lies within 1 standard deviation of the mean.
+📌 Why Important:
+Many statistical tests assume normality, such as z‑tests and linear regression.
+
+✅ 5. Skewness & Kurtosis
+Best Interview Answer:
+Skewness measures asymmetry of data, while kurtosis measures the heaviness of tails.
+Positive skew means a long right tail, and negative skew means a long left tail.
+📌 Practical Insight:
+Highly skewed data often needs transformation before modeling.
+
+✅ 6. Hypothesis Testing
+Best Interview Answer:
+Hypothesis testing is a statistical method used to make decisions using data.
+We define a null hypothesis (no effect) and an alternative hypothesis (effect exists), then decide whether to reject the null.
+📌 Used In:
+Experiment analysis, A/B testing, model comparison.
+
+✅ 7. p‑Value
+Best Interview Answer:
+The p‑value represents the probability of observing the data assuming the null hypothesis is true.
+If the p‑value is less than the significance level (usually 0.05), we reject the null hypothesis.
+📌 Important Note:
+A small p‑value does not measure effect size — only statistical significance.
+
+✅ 8. Confidence Interval
+Best Interview Answer:
+A confidence interval gives a range within which the true population parameter is likely to lie.
+A 95% confidence interval means we are 95% confident the true value lies within that range.
+📌 Why Interviewers Like This:
+It provides more information than a single point estimate.
+
+✅ 9. A/B Testing
+Best Interview Answer:
+A/B testing compares two versions of a product or feature to determine which performs better.
+Statistical tests are used to check whether observed differences are statistically significant.
+📌 Example:
+Comparing click‑through rates of two website designs.
+
+✅ 10. Type I & Type II Errors
+Best Interview Answer:
+
+Type I error: Rejecting a true null hypothesis (false positive)
+Type II error: Failing to reject a false null hypothesis (false negative)
+
+📌 Business Example:
+In fraud detection, Type II error is more costly because missing fraud is worse than flagging a genuine transaction.
