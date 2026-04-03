@@ -1,0 +1,265 @@
+1. What is Deep Learning?
+Best Answer:
+Deep Learning is a subset of Machine Learning that uses neural networks with multiple hidden layers to automatically learn complex patterns from large amounts of data.
+
+2. Difference between Machine Learning and Deep Learning?
+Best Answer:
+
+Machine Learning requires manual feature engineering
+Deep Learning automatically learns features using neural networks
+Deep Learning performs better on unstructured data like images, audio, and text
+
+
+3. Why is Deep Learning powerful?
+Best Answer:
+Because it can model highly non‑linear relationships and automatically extract hierarchical features from raw data.
+
+4. When should you NOT use Deep Learning?
+Best Answer:
+
+Small datasets
+Need high interpretability
+Limited compute resources
+Traditional ML may perform better.
+
+
+🔹 2. NEURAL NETWORK FUNDAMENTALS
+
+5. What is an Artificial Neural Network (ANN)?
+Best Answer:
+A network inspired by the human brain consisting of neurons, weights, biases, and activation functions to learn patterns from data.
+
+6. What are the main components of a neural network?
+Best Answer:
+
+Input layer
+Hidden layers
+Output layer
+Weights
+Bias
+Activation functions
+
+
+7. What is a neuron?
+Best Answer:
+A neuron computes a weighted sum of inputs, adds bias, and applies an activation function.
+
+8. What is an activation function?
+Best Answer:
+It introduces non‑linearity into the network, allowing it to learn complex patterns.
+
+9. Common activation functions?
+Best Answer:
+
+ReLU
+Sigmoid
+Tanh
+Softmax
+Leaky ReLU
+
+
+🔹 3. ACTIVATION FUNCTIONS (VERY IMPORTANT)
+
+10. Why is ReLU commonly used?
+Best Answer:
+ReLU is computationally efficient, avoids vanishing gradient problem, and speeds up training.
+
+11. Sigmoid vs Softmax?
+Best Answer:
+
+Sigmoid → Binary classification
+Softmax → Multi‑class classification
+
+
+12. What is vanishing gradient problem?
+Best Answer:
+When gradients become very small during backpropagation, preventing the network from learning.
+
+13. How to solve vanishing gradients?
+Best Answer:
+
+ReLU/Leaky ReLU
+Batch normalization
+Better initialization
+Residual connections
+
+
+🔹 4. TRAINING A NEURAL NETWORK
+
+14. What is forward propagation?
+Best Answer:
+Data flows from input to output to generate predictions.
+
+15. What is backpropagation?
+Best Answer:
+Algorithm that calculates gradients and updates weights to minimize loss.
+
+16. What is loss function?
+Best Answer:
+Measures how far predictions are from actual values.
+
+17. Common loss functions?
+Best Answer:
+
+MSE → Regression
+Binary Cross‑Entropy → Binary classification
+Categorical Cross‑Entropy → Multi‑class classification
+
+
+18. What is an optimizer?
+Best Answer:
+An algorithm that updates network weights to minimize loss.
+
+19. Popular optimizers?
+Best Answer:
+
+SGD
+Adam
+RMSprop
+Adagrad
+
+
+20. Why is Adam preferred?
+Best Answer:
+Adam adapts learning rates automatically and converges faster.
+
+🔹 5. HYPERPARAMETERS
+
+21. What is learning rate?
+Best Answer:
+Controls how much weights are updated during training.
+
+22. High vs low learning rate?
+Best Answer:
+
+High → Faster but unstable
+Low → Stable but slow
+
+
+23. What is batch size?
+Best Answer:
+Number of samples processed before updating weights.
+
+24. What is epoch?
+Best Answer:
+One complete pass of the entire dataset through the network.
+
+🔹 6. OVERFITTING & REGULARIZATION
+
+25. Why do deep networks overfit?
+Best Answer:
+They have high capacity and can memorize training data.
+
+26. Techniques to prevent overfitting?
+Best Answer:
+
+Dropout
+Early stopping
+Regularization
+Data augmentation
+
+
+27. What is dropout?
+Best Answer:
+Randomly deactivates neurons during training to improve generalization.
+
+28. What is batch normalization?
+Best Answer:
+Normalizes activations to stabilize and speed up training.
+
+🔹 7. CNN (CONVOLUTIONAL NEURAL NETWORKS)
+
+29. What is CNN?
+Best Answer:
+A neural network specialized for image data using convolution and pooling.
+
+30. Why CNN is better for images?
+Best Answer:
+Because it captures spatial features and reduces number of parameters.
+
+31. What is convolution?
+Best Answer:
+Applying filters to extract features like edges and shapes.
+
+32. What is pooling?
+Best Answer:
+Downsamples feature maps to reduce computation.
+
+33. Max pooling vs average pooling?
+Best Answer:
+
+Max → captures strong features
+Average → smooths features
+
+
+🔹 8. RNN, LSTM, GRU
+
+34. What is RNN?
+Best Answer:
+Neural network for sequential data that maintains memory using previous outputs.
+
+35. Limitation of RNN?
+Best Answer:
+Vanishing gradient problem.
+
+36. What is LSTM?
+Best Answer:
+An improved RNN that can capture long‑term dependencies using memory gates.
+
+37. LSTM vs GRU?
+Best Answer:
+
+LSTM → More expressive
+GRU → Faster, simpler
+
+
+🔹 9. TRANSFORMERS & MODERN DL
+
+38. What is attention mechanism?
+Best Answer:
+Allows model to focus on relevant parts of input sequence.
+
+39. Why Transformers replaced RNNs?
+Best Answer:
+Transformers enable parallel computation and capture long‑range dependencies efficiently.
+
+40. What is BERT / GPT?
+Best Answer:
+Transformer‑based pre‑trained language models.
+
+🔹 10. REAL INTERVIEW SCENARIOS
+
+41. Training loss decreases but validation loss increases?
+Best Answer:
+Overfitting.
+
+42. Model not learning at all – reasons?
+Best Answer:
+
+Wrong learning rate
+Poor initialization
+Data issues
+Vanishing gradients
+
+
+43. How do you improve model performance?
+Best Answer:
+
+Better data
+Hyperparameter tuning
+Architecture changes
+Regularization
+
+
+44. How do you explain Deep Learning to non‑technical people?
+Best Answer:
+“Like teaching a system by examples, allowing it to learn patterns on its own.”
+
+45. Real‑world Deep Learning applications?
+Best Answer:
+
+Image recognition
+Speech recognition
+NLP (chatbots, translation)
+Autonomous driving
+Medical imaging
