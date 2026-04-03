@@ -182,3 +182,87 @@ q33. How to Explain the Project to a Non‑Technical Person (Business / HR / Sta
 “Banks often struggle to predict which customers might stop paying their credit card bills, especially because most customers don’t default. I built a system that looks at how people pay over time—not just who they are—to spot early warning signs.
 Instead of relying on age or gender, the model focuses on behavior, like whether payments are becoming more irregular, delays are increasing, or bills are piling up. These patterns usually show financial stress before someone actually defaults.
 Using this approach, the model helps banks flag risky customers earlier, reduce losses, and avoid incorrectly rejecting good customers. In simple terms, it helps banks make smarter, fairer credit decisions.
+
+STAR Question 1: Tell me about a deep learning project you worked on
+S – Situation
+Financial institutions struggle to predict credit card defaults because the data is highly imbalanced and customer repayment behavior changes over time.
+T – Task
+My task was to build an accurate deep learning model that could identify high‑risk customers early while minimizing false alarms.
+A – Action
+I performed data cleaning and engineered behavioral features capturing repayment trends and volatility. I then built a deep neural network, handled class imbalance using class weights, and optimized the classification threshold to balance recall and precision.
+R – Result
+The final tuned model achieved an F1‑score of 0.55 and significantly improved defaulter recall while reducing false positives, making it practical for real‑world credit decisioning.
+
+⭐ STAR Question 2: Describe a challenge you faced in a deep learning project
+S – Situation
+The largest challenge was severe class imbalance: only 22% of customers were defaulters, causing baseline models to miss risky customers.
+T – Task
+I needed to improve defaulter detection without overwhelming the business with false positives.
+A – Action
+I applied class‑weighted loss functions to penalize misclassification of defaulters and later tuned the classification threshold from 0.50 to 0.55 based on F1‑score optimization.
+R – Result
+Recall improved from 0.32 to 0.62 in early models, and the final tuned model produced balanced predictions with fewer false alarms and reliable risk detection.
+
+⭐ STAR Question 3: How did feature engineering improve your deep learning model?
+S – Situation
+Raw repayment variables did not adequately capture changing customer behavior over time.
+T – Task
+I needed to create features that represent risk progression rather than static snapshots.
+A – Action
+I engineered temporal behavioral features such as payment variability, delay acceleration, repayment trend, and longest delay streak to capture worsening or unstable credit behavior.
+R – Result
+These engineered features showed stronger correlation with default than demographics and significantly improved model performance and interpretability.
+
+⭐ STAR Question 4: Tell me about a time you optimized a model beyond accuracy
+S – Situation
+The initial deep learning model achieved high accuracy but still missed many defaulters due to class imbalance.
+T – Task
+My goal was to optimize the model based on business‑relevant metrics rather than accuracy alone.
+A – Action
+I evaluated precision, recall, and F1‑score, then adjusted the decision threshold to reduce false positives while maintaining defaulter detection.
+R – Result
+At a threshold of 0.55, the model achieved a balanced F1‑score of 0.55 and improved decision quality for credit approvals.
+
+⭐ STAR Question 5: How did you prevent overfitting in your neural network?
+S – Situation
+The deep learning model was at risk of overfitting due to many correlated repayment features.
+T – Task
+I needed to improve generalization to unseen customers.
+A – Action
+I added Batch Normalization to stabilize learning and Dropout layers to reduce dependency on individual neurons. I also limited network depth to avoid unnecessary complexity.
+R – Result
+The model trained more stably and showed consistent performance on validation data without overfitting.
+
+⭐ STAR Question 6: Explain a time you made a design decision and justified it
+S – Situation
+I needed to choose between simpler models and a deep learning architecture.
+T – Task
+The decision had to be justified based on data complexity and prediction goals.
+A – Action
+I evaluated correlation patterns and non‑linear interactions in repayment behavior and determined a neural network with multiple dense layers was better suited than linear models.
+R – Result
+The deep learning model captured behavioral patterns more effectively, producing better recall and practical risk insights.
+
+⭐ STAR Question 7: How did your work create business value?
+S – Situation
+Misclassifying defaulters leads to financial losses, while over‑flagging customers impacts revenue.
+T – Task
+I needed to ensure the model supported better business decisions, not just technical performance.
+A – Action
+I tuned class weights and thresholds to balance risk detection and customer fairness, focusing on minimizing costly false negatives.
+R – Result
+The final model delivered balanced predictions, reduced exposure to bad credit, and supported smarter credit approval decisions.
+
+⭐ STAR Question 8: What did you learn from this deep learning project?
+S – Situation
+This project involved complex data, imbalance, and behavioral modeling.
+T – Task
+My goal was to extract reliable insights while building a robust model.
+A – Action
+Through iterative experimentation, evaluation, and threshold tuning, I learned to prioritize business‑aligned metrics over raw accuracy.
+R – Result
+I learned that behavioral features combined with careful model tuning are critical for real‑world machine learning success.
+
+✅ One‑Sentence STAR Answer (When Time Is Very Short)
+
+“I built a class‑weighted deep learning credit risk model using behavioral feature engineering and threshold optimization to improve defaulter detection while reducing false alarms.”
