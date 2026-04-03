@@ -1,0 +1,165 @@
+Credit Risk Modeling 
+with Deep Learning and 
+Behavioral Analytics
+Team Members
+yosan 
+Reshma 
+Date – 2026-02-24
+Problem:
+ Predicting credit card 
+default is difficult due to 
+imbalanced data and 
+changing customer 
+repayment behavior.
+Goal:
+ Develop an accurate 
+model to identify high-risk 
+customers and predict 
+default early.
+About Dataset: The dataset contains 
+credit, demographic, and 
+repayment history of 
+30,000 credit card clients 
+in Taiwan used to predict 
+default risk.
+Data Cleaning and Feature 
+Engineering
+• Fixed headers and numeric types
+• Dropped ID and cleaned education
+• Renamed target to default
+Feature Engineering:
+● pay_trend – Overall repayment improving or worsening over time
+● recent_vs_past_pay – Sudden recent delays compared to past 
+behavior
+● payment_variability – Month-to-month instability in payments
+● delay_acceleration – Speed at which repayment delays are worsening
+● longest_pay_delay_streak – Longest consecutive months with delayed 
+payments
+nsight: These features capture repayment behavior, trends, and risk patterns, 
+making the model more effective at predicting defaults.
+Target Distribution
+•78% No Default
+•22% Default
+•Imbalance affects model learning
+Credit Default Insights: Gender
+•Male clients: 2,873 of 11,888 defaulted - 24%
+• Female clients: 3,763 of 18,112 defaulted - 21%
+Credit Default Insights: Education & Marital Status
+•Graduate School: Lowest default rates (Singles 18%, 
+Married 21%)
+• University: Moderate risk (Married 24%, Others 27%)
+• High School: Highest risk (Married/Others ~26%)
+• Trend: Married clients tend to default more than singles 
+across all education levels
+•Others Education: Low default, but very few records -  
+interpret cautiously
+• Key Insight: Lower education + married status - higher 
+risk; Higher education + single - lower risk
+Correlation Heatmap 
+(Engineered)
+Engineered Features - Strongest with Default
+• Avg payment status (r ≈ 0.28)
+• Longest delay streak (r ≈ 0.17)
+• Pay volatility & trend features
+• Delay acceleration, worsening months
+Utilization Effects
+• Avg bill utilization (r ≈ 0.12)
+• Max utilization (r ≈ 0.08)
+• Higher usage -  higher risk
+Original Features (Reconfirmed)
+• PAY_0 strongest (r = 0.32)
+• LIMIT_BAL negative (r = −0.15)
+• Demographics weak
+•
+Model 
+Strategy
+BASELINE MODEL
+CLASS-WEIGHTED MODEL
+TUNED MODEL + THRESHOLD 
+OPTIMIZATION
+Deep Learning Model with Class Weights - Architecture & Training Behavior
+MODEL 
+● Dense(64) → Dense(32) → Output
+● Dataset imbalance: 78% non-default, 22% 
+default
+● Class weights: Non-default = 0.64, Default = 
+2.25
+● Focuses on correctly identifying risky 
+customers
+ Performance Impact – Class Weights
+● Recall improved: 0.32 → 0.62
+● False Negatives reduced: 677 → 378
+● F1-score increased: 0.44 → 0.53
+● Result: Much better detection of 
+defaulters
+Tuned Deep Learning Model — Architecture & Performance (Threshold = 0.50)
+Tuned FCNN Architecture
+● Dense 256 → BatchNorm → Dropout
+● Dense 128 → BatchNorm → Dropout
+● Dense 64 → Dropout
+● Output Layer: Sigmoid activation
+● Regularization: Batch Normalization & Dropout to reduce 
+overfitting
+Tuned Model Performance 
+● Precision: 0.50
+● Recall: 0.60
+● F1-score: 0.55
+● True Positives (Defaulters 
+detected): 599
+● False Negatives (Missed defaulters): 
+396
+Optimal Threshold Selection
+•
+Goal
+● Balance precision and recall
+● Reduce false alarms
+Why not 0.50?
+● Higher false positives
+● More good customers flagged.
+Why 0.55?
+● Highest F1-score (0.55)
+● Similar defaulter detection
+● Fewer false positives.
+Business Benefit
+• Better credit approval decisions
+• Balanced risk detection
+Final Tuned DL Model Performance (Threshold = 
+0.55)
+Overall Performance
+• Accuracy: 0.80
+• Precision: 0.56
+•Recall: 0.54
+• F1-score: 0.55
+Key Result
+• Balanced predictions
+•Reduced false alarms
+•Reliable defaulter detection
+Feature Importance - Default Prediction
+Most Important Features
+● payment_variability
+● Recent payment status
+● Longest payment delay
+● Current payment status (PAY_0)
+● Delay acceleration
+Moderate Importance
+● Age
+● Credit limit
+● Bill amounts
+Low Importance
+•Demographics (sex, education, 
+marriage)
+Final 
+Conclusion
+Repayment behavior patterns were the strongest 
+indicators of credit default risk, outperforming 
+demographic factors.
+Engineered temporal repayment features significantly 
+improved model prediction capability.
+The tuned deep learning model with an optimized 0.55 
+threshold achieved the best balance between detecting 
+defaulters and minimizing false alarms.
+The final model provides reliable and practical support 
+for real-world credit risk assessment and early default 
+detection.
+Thank you! 
+Any qeastions
