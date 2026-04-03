@@ -1,0 +1,184 @@
+Credit Risk Modeling project
+
+Q1. Intro of the project
+I worked on a deep learning–based credit risk modeling project focused on predicting credit card defaults. One of the biggest challenges was that defaults are rare—only about 22% of customers—and repayment behavior changes over time.
+To solve this, I engineered behavioral and temporal features such as payment variability, repayment trends, delay acceleration, and longest delay streaks, which capture how a customer’s financial behavior evolves.
+I then built and tuned a fully connected neural network, handled class imbalance using class weights, and optimized the decision threshold to balance recall and precision. This significantly improved our ability to identify high‑risk customers while reducing false alarms.
+The final model achieved an F1‑score of 0.55 with balanced performance and showed that repayment behavior patterns are far stronger predictors of default than demographic data.
+This makes the model practical for real‑world credit approval and early risk detection.
+
+Q2. Why is credit default prediction important for banks?
+Answer:
+Credit default prediction helps banks reduce financial losses, improve approval decisions, optimize credit limits, and intervene early with at-risk customers. Accurate early detection allows proactive risk mitigation instead of reacting after defaults occur.
+
+Q3. What problem were you trying to solve?
+Answer:
+The main problem was detecting defaulters early in an imbalanced dataset where only 22% of customers default, and repayment behavior evolves over time. Traditional models often miss risky customers, so the goal was to improve recall without excessively flagging good customers.
+
+🔹 2. Dataset & Data Understanding
+Q4. Tell me about the dataset you used.
+Answer:
+The dataset contains credit, demographic, bill amount, and repayment history for 30,000 Taiwanese credit card customers. The target variable indicates whether a customer defaults next month. It’s a well-known imbalance problem with 78% non-defaulters.
+
+Q5. Why did you drop the ID column?
+Answer:
+ID has no predictive value and introduces noise. It’s a unique identifier and does not correlate with customer behavior or risk.
+
+Q6. How did you handle data quality issues?
+Answer:
+I fixed column headers, ensured numeric types, cleaned inconsistent education values, removed irrelevant fields, and validated missing values. This ensured stable model training and correct feature interpretation.
+
+🔹 3. Feature Engineering (Very Important Section)
+Q7. Why did you focus so much on feature engineering?
+Answer:
+Because repayment behavior over time is more predictive than static demographics. Engineered temporal features allow the model to capture trends, volatility, and worsening payment patterns, which strongly correlate with default risk.
+
+Q8. Explain pay_trend.
+Answer:
+It measures whether a customer’s repayment behavior is improving or worsening over time. A worsening trend indicates growing financial stress, which increases default probability.
+
+Q9. What is payment_variability and why is it important?
+Answer:
+Payment variability captures month-to-month instability in repayments. High variability indicates inconsistent financial behavior, which is strongly associated with default risk. It was one of the most important features in the model.
+
+Q10. Can you explain delay_acceleration?
+Answer:
+Delay acceleration measures how quickly payment delays are increasing over time. A rapidly increasing delay indicates a customer is deteriorating financially, making it a powerful early warning signal.
+
+Q11. Why did these engineered features outperform demographics?
+Answer:
+Demographics are static, while repayment behavior reflects real-time financial stress. Defaults are driven by behavior, not age or gender, which is why engineered temporal features showed much stronger correlation with default.
+
+🔹 4. Exploratory Data Analysis (EDA)
+Q12. What did you observe about target imbalance?
+Answer:
+Only 22% of customers defaulted, which can bias models toward predicting non-default. Without handling imbalance, models produce high accuracy but poor recall for defaulters.
+
+Q13. Did gender significantly impact default?
+Answer:
+Males had a slightly higher default rate (24%) than females (21%), but gender was a weak predictor compared to behavioral features.
+
+Q14. What insights did education and marital status show?
+Answer:
+Lower education combined with married status showed higher default risk. Higher education and single status showed lower risk. However, these features were still much weaker than repayment behavior indicators.
+
+🔹 5. Correlation & Feature Importance
+Q15. Which features had the strongest correlation with default?
+Answer:
+Payment status (PAY_0), average payment status, payment variability, longest delay streak, and delay acceleration showed the strongest correlation.
+
+Q16. Why is LIMIT_BAL negatively correlated with default?
+Answer:
+Higher credit limits typically indicate better creditworthiness and income stability, reducing default risk.
+
+🔹 6. Model Selection & Strategy
+Q17. Why did you choose deep learning over traditional models?
+Answer:
+Deep learning captures non-linear relationships, interactions among features, and complex temporal patterns better than linear models. This is especially beneficial for behavioral features.
+
+Q18. What was your baseline model?
+Answer:
+A basic fully connected neural network trained without class weights and threshold tuning, mainly for comparison.
+
+Q19. Why did you use class weights?
+Answer:
+To address class imbalance. Class weights penalize misclassifying defaulters more heavily, encouraging the model to improve recall for high-risk customers.
+
+🔹 7. Model Architecture & Training
+Q20. Can you explain your tuned architecture?
+Answer:
+The tuned model used multiple dense layers (256 → 128 → 64), batch normalization to stabilize training, and dropout to prevent overfitting. A sigmoid output layer was used for binary classification.
+
+->What is a Dense Layer?
+A Dense layer is a fully connected layer where every neuron connects to every neuron in the next layer.
+->Why multiple dense layers?
+Each layer:
+* Learns patterns at different levels
+* Transforms data from simple → complex representation
+->Why decreasing size (256 → 128 → 64)?
+256-Capture complex interactions, 128-Refine important patterns, 64-Focus on strongest signals
+The gradually decreasing dense layers act as a feature hierarchy, allowing the network to learn complex interactions first and then compress them into the most predictive representations.
+(Non‑technical explanation): It’s like starting with a lot of information and gradually filtering it down to only the most important signals needed to make a decision
+
+
+Q21. What is Batch Normalization? and  Why Batch Normalization?
+Answer:
+* (technical)“Batch Normalization stabilizes layer inputs by normalizing activations during training, which speeds up convergence and improves generalization. It also allows deeper networks to train more reliably.
+* (Non‑technical explanation)“Batch Normalization keeps the neural network’s learning stable by making sure each layer receives data in a consistent range, like keeping water pressure steady in pipes.
+->Why it’s used:
+* Makes training faster.
+* Makes training more stable.
+* Reduces sensitivity to weight initialization.
+* Helps prevent exploding/vanishing gradients.
+-> What problem it solves: 
+*During training, the distribution of inputs to layers keeps changing as weights update.This is called internal covariate shift.
+*Batch Normalization fixes this by stabilizing the input distribution for each layer.
+
+
+Q22.What is Dropout? Why Dropout?
+Answer:
+* (technical) : Dropout prevents overfitting by randomly disabling neurons during training so the network doesn’t rely too heavily on any single feature
+* (Non‑technical explanation) : Dropout is like training a team where different members sit out each practice, so the team doesn’t depend on just one person.
+-> Why it’s used:
+* Prevents overfitting
+* Forces the model to learn robust patterns
+* Improves generalization to unseen data
+-> What problem it solves: 
+* Neural networks can memorize training data instead of learning general rules.
+* Dropout prevents dependency on specific neurons.
+Dropout = 0.3 → 30% of neurons ignored per batch
+
+🔹 8. Evaluation Metrics & Threshold Optimization
+Q23. Why didn’t you rely on accuracy?
+Answer:
+Accuracy is misleading in imbalanced datasets. A model predicting “no default” for everyone would still achieve 78% accuracy.
+
+Q24. Why is recall important in this problem?
+Answer:
+Recall measures how many real defaulters we correctly identify. Missing defaulters leads to financial loss, so recall is critical for risk management.
+
+Q25. Why tune the threshold instead of keeping 0.50?
+Answer:
+A 0.50 threshold produced too many false positives. Increasing it to 0.55 improved F1-score and reduced unnecessary rejection of good customers while maintaining defaulter detection.
+
+Q26. Why did you choose F1-score?
+Answer:
+F1-score balances precision and recall, aligning with business goals of minimizing losses while avoiding excessive false alarms.
+
+🔹 9. Business Impact & Deployment Perspective
+Q27. How does this model help the business?
+Answer:
+It enables better credit approval decisions, early intervention for risky customers, reduced charge-offs, and optimized operational costs.
+
+Q28. How would you deploy this model?
+Answer:
+As an API scoring service integrated into the loan approval system, running batch predictions daily or real-time scoring during applications.
+
+Q29. How would you monitor it in production?
+Answer:
+Monitor AUC, recall, data drift, prediction distribution, and retrain periodically as customer behavior changes.
+
+🔹 10. Challenges & Improvements
+Q30. What were the biggest challenges?
+Answer:
+Handling imbalance, feature engineering meaningful temporal patterns, and balancing recall with false positive risk.
+
+Q31. How would you improve this project further?
+Answer:
+
+Try LSTM/GRU for sequential payments
+Add explainability (SHAP)
+Cost-sensitive loss functions
+Segment-based modeling
+
+
+🔹 11. Final Wrap-Up Question
+Q32. What is the key takeaway from your project?
+Answer:
+Behavioral repayment patterns are far more powerful predictors than static demographics. Carefully engineered temporal features combined with a tuned deep learning model deliver practical and reliable credit risk detection.
+
+q33. How to Explain the Project to a Non‑Technical Person (Business / HR / Stakeholder)
+
+“Banks often struggle to predict which customers might stop paying their credit card bills, especially because most customers don’t default. I built a system that looks at how people pay over time—not just who they are—to spot early warning signs.
+Instead of relying on age or gender, the model focuses on behavior, like whether payments are becoming more irregular, delays are increasing, or bills are piling up. These patterns usually show financial stress before someone actually defaults.
+Using this approach, the model helps banks flag risky customers earlier, reduce losses, and avoid incorrectly rejecting good customers. In simple terms, it helps banks make smarter, fairer credit decisions.
