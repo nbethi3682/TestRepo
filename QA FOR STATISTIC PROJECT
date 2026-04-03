@@ -1,0 +1,65 @@
+1. Can you briefly explain your project?
+Best Answer:
+My project analyzes how lifestyle habits, eating behavior, and physical conditions affect obesity levels using the UCI Obesity Dataset. I used statistical tests and logistic regression to identify significant factors and build an obesity prediction model.
+
+2. What dataset did you use and why?
+Best Answer:
+I used the UCI Estimation of Obesity Levels Based on Eating Habits and Physical Condition dataset. It contains 2,111 records with demographic, lifestyle, and physical attributes, making it suitable for hypothesis testing and predictive modeling related to obesity.
+
+3. How did you clean and preprocess the data?
+Best Answer:
+I renamed columns for clarity, converted categorical variables into category data types, checked for missing values, removed duplicate records, and created a new feature—BMI—using weight and height.
+
+4. Why did you calculate BMI?
+Best Answer:
+BMI is a standard measure used to classify obesity. Since obesity categories are based on BMI ranges, it was essential for both exploratory analysis and building an accurate predictive model.
+
+5. What statistical tests did you use in your analysis?
+Best Answer:
+I used:
+
+T-tests to compare mean differences between two groups
+Chi-square tests to examine relationships between categorical variables
+ANOVA to compare means across multiple groups
+Logistic regression for obesity prediction
+
+
+6. What was the most important finding from your analysis?
+Best Answer:
+BMI was the strongest predictor of obesity. Models including BMI achieved up to 99.5% accuracy, while models using lifestyle factors alone performed much worse.
+
+7. Did lifestyle habits impact obesity?
+Best Answer:
+Yes, but their impact was smaller compared to BMI. Exercise frequency, snacking habits, calorie tracking, and water intake showed statistically significant patterns, but they contributed less to prediction accuracy than physical measures.
+
+8. What did the gender-based analysis show?
+Best Answer:
+Males had significantly higher average weight than females. Additionally, obesity levels were distributed differently across genders, confirmed by a Chi-square test.
+
+9. Why did you use logistic regression instead of linear regression?
+Best Answer:
+Because the target variable was binary—obese vs non-obese. Logistic regression is appropriate for classification problems where the outcome represents probabilities.
+
+10. How did family history affect obesity?
+Best Answer:
+Individuals with a family history of overweight had significantly higher average weight. This highlights the role of genetic and environmental factors in obesity risk.
+
+11. What challenges did you face in this project?
+Best Answer:
+One challenge was avoiding data leakage, especially since BMI is directly related to obesity categories. I addressed this by comparing models with and without BMI to understand its true impact.
+
+12. What are the limitations of your study?
+Best Answer:
+Most obesity labels are based on BMI, which can overshadow lifestyle effects. Additionally, a large portion of the dataset is synthetic, which may limit real-world generalization.
+
+13. How could this project be improved in the future?
+Best Answer:
+Future work could include real-world longitudinal data, additional health indicators, and more advanced models such as decision trees or ensemble learning.
+
+14. How is this project relevant to real-world applications?
+Best Answer:
+It demonstrates how data-driven models can help identify obesity risk early and support personalized health interventions and public health planning.
+
+15. What tools and technologies did you use?
+Best Answer:
+Python, Pandas, NumPy, Matplotlib, Seaborn, and Scikit-learn were used for data analysis, visualization, and modeling.
