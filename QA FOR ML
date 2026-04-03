@@ -1,0 +1,259 @@
+1. MACHINE LEARNING FUNDAMENTALS
+
+1. What is Machine Learning?
+Best Answer:
+Machine Learning is a field of AI that enables systems to learn patterns from historical data and make predictions or decisions without being explicitly programmed for every scenario.
+
+2. What are the main types of Machine Learning?
+Best Answer:
+
+Supervised Learning – Uses labeled data (Regression, Classification)
+Unsupervised Learning – No labels (Clustering, PCA)
+Semi‑Supervised Learning – Partial labels
+Reinforcement Learning – Reward‑based learning through interaction
+
+
+3. Difference between AI, ML, and Deep Learning?
+Best Answer:
+
+AI: Broad goal of creating intelligent systems
+ML: Models learn from data
+Deep Learning: ML using deep neural networks with multiple layers
+
+
+4. Supervised vs Unsupervised Learning?
+Best Answer:
+
+Supervised → Labeled data, prediction tasks
+Unsupervised → Pattern discovery, structure identification
+
+
+5. Classification vs Regression?
+Best Answer:
+
+Classification: Predicts categories (spam/not spam)
+Regression: Predicts continuous values (price, revenue)
+
+
+🔹 2. CORE ML CONCEPTS (VERY IMPORTANT)
+
+6. What is overfitting?
+Best Answer:
+Overfitting occurs when a model performs very well on training data but poorly on unseen data because it learned noise instead of general patterns.
+
+7. What is underfitting?
+Best Answer:
+Underfitting happens when a model is too simple to capture underlying data patterns, leading to poor performance on both training and test data.
+
+8. Explain Bias–Variance tradeoff.
+Best Answer:
+
+High Bias: Model is too simple → underfitting
+High Variance: Model is too complex → overfitting
+The goal is to balance both to minimize total error.
+
+
+9. How do you handle overfitting?
+Best Answer:
+
+Cross‑validation
+Regularization (L1/L2)
+Reduce features
+Increase data
+Early stopping
+Ensemble methods
+
+
+10. What is regularization?
+Best Answer:
+Regularization adds a penalty to large model coefficients to prevent overfitting and improve generalization.
+
+11. L1 vs L2 regularization?
+Best Answer:
+
+L1 (Lasso): Performs feature selection by forcing coefficients to zero
+L2 (Ridge): Shrinks coefficients smoothly without eliminating them
+
+
+🔹 3. DATA PREPROCESSING
+
+12. How do you handle missing data?
+Best Answer:
+
+Drop rows/columns (if less impact)
+Mean/median/mode imputation
+Model‑based imputation
+Choice depends on data size and importance.
+
+
+13. How to handle categorical variables?
+Best Answer:
+
+One‑hot encoding (nominal)
+Label encoding (ordinal)
+Target encoding (high cardinality)
+
+
+14. Why is feature scaling important?
+Best Answer:
+Algorithms like KNN, SVM, and Linear Regression are distance‑based and sensitive to scale; scaling ensures fair contribution of features.
+
+15. Standardization vs Normalization?
+Best Answer:
+
+Standardization: mean = 0, std = 1
+Normalization: range scaled to [0,1]
+
+
+🔹 4. ALGORITHMS (MUST‑KNOW)
+
+16. Assumptions of Linear Regression?
+Best Answer:
+
+Linear relationship
+No multicollinearity
+Homoscedasticity
+Independent errors
+Normally distributed errors
+
+
+17. Why is Logistic Regression called regression?
+Best Answer:
+Because it models probabilities using a regression equation and applies a sigmoid function to classify outputs.
+
+18. Decision Tree advantages and disadvantages?
+Best Answer:
+✅ Easy to interpret
+✅ Handles non‑linearity
+❌ Overfits easily
+❌ High variance
+
+19. Random Forest vs Decision Tree?
+Best Answer:
+Random Forest reduces overfitting by aggregating predictions from multiple decision trees.
+
+20. How does KNN work?
+Best Answer:
+KNN classifies a data point based on the majority class of its nearest K neighbors.
+
+21. Drawbacks of KNN?
+Best Answer:
+
+Slow prediction for large datasets
+Sensitive to feature scaling
+High memory usage
+
+
+22. What is SVM intuition?
+Best Answer:
+SVM finds the optimal hyperplane that maximizes the margin between classes.
+
+🔹 5. MODEL EVALUATION
+
+23. Why train‑test split?
+Best Answer:
+To evaluate how well the model generalizes to unseen data.
+
+24. Why cross‑validation?
+Best Answer:
+Provides a more reliable performance estimate and reduces dependency on a single split.
+
+25. What is a confusion matrix?
+Best Answer:
+A table showing TP, TN, FP, FN, used to evaluate classification models.
+
+26. Precision vs Recall?
+Best Answer:
+
+Precision: Correct positive predictions
+Recall: Captures actual positives
+
+
+27. When is recall more important than precision?
+Best Answer:
+In medical diagnosis or fraud detection where missing a positive is costly.
+
+28. What is ROC‑AUC?
+Best Answer:
+Measures the model’s ability to distinguish between classes across thresholds.
+
+🔹 6. UNSUPERVISED LEARNING
+
+29. What is clustering?
+Best Answer:
+Grouping similar data points based on distance or similarity.
+
+30. How do you choose K in K‑Means?
+Best Answer:
+
+Elbow method
+Silhouette score
+
+
+31. What is PCA?
+Best Answer:
+Dimensionality reduction technique that retains maximum variance using orthogonal components.
+
+32. When should PCA not be used?
+Best Answer:
+When feature interpretability is critical.
+
+🔹 7. ADVANCED / DATA SCIENCE LEVEL
+
+33. What is feature engineering?
+Best Answer:
+Transforming raw data into meaningful features to improve model performance.
+
+34. What is data leakage?
+Best Answer:
+When information from future or test data leaks into training, leading to unrealistic performance.
+
+35. What is ensemble learning?
+Best Answer:
+Combining multiple models to improve accuracy and robustness.
+
+36. Bagging vs Boosting?
+Best Answer:
+
+Bagging: Parallel, reduces variance
+Boosting: Sequential, reduces bias
+
+
+37. Why is XGBoost popular?
+Best Answer:
+
+Handles missing values
+Built‑in regularization
+Fast and scalable
+High accuracy
+
+
+38. What is hyperparameter tuning?
+Best Answer:
+Optimizing non‑learnable model parameters using Grid Search, Random Search, or Bayesian Optimization.
+
+39. What is an ML pipeline?
+Best Answer:
+A structured workflow combining preprocessing, feature selection, and modeling into one process.
+
+🔹 8. REAL INTERVIEW SCENARIOS
+
+40. Training accuracy high, test accuracy low – why?
+Best Answer:
+Model is overfitting.
+
+41. How do you choose the final model?
+Best Answer:
+Based on performance metrics, interpretability, scalability, and business requirements.
+
+42. How do you explain ML models to non‑technical stakeholders?
+Best Answer:
+Using simple analogies, feature importance, visualizations, and business impact.
+
+43. Real‑world ML use cases?
+Best Answer:
+
+Recommendation systems
+Fraud detection
+Churn prediction
+Demand forecasting
