@@ -251,3 +251,109 @@ We analyzed how customers behave during online visits — what pages they view, 
 For example, users who spend more time on product and checkout‑related pages, and who don’t leave quickly, are much more likely to buy. Our model learns these patterns and assigns a likelihood of purchase to each session.
 The final model correctly identifies high‑intent customers with very high accuracy, which means the business can focus promotions, discounts, or personalized content on users who are most likely to convert — instead of spending money on low‑intent traffic.
 In short, this helps increase conversion rates, reduce wasted marketing spend, and improve customer experience by targeting the right users at the right time.
+
+
+⭐ 1. Tell me about a challenging problem you solved.
+S – Situation
+During my Online Shopper Purchase Prediction project, the dataset had strong class imbalance, with only about 15% of sessions resulting in purchases.
+T – Task
+My goal was to build a model that could accurately identify buyers, not just maximize accuracy.
+A – Action
+I explored the class distribution, verified the imbalance, and applied SMOTE to oversample the minority class. I also evaluated models using ROC‑AUC, precision, recall, and F1-score instead of accuracy alone.
+R – Result
+The final Gradient Boosting model achieved 89% accuracy and a ROC‑AUC of 0.93, with strong recall for buyers. This ensured the model was useful for real business targeting rather than misleadingly high accuracy.
+
+⭐ 2. Describe a time you used data to drive a decision.
+S
+In the same project, I noticed many technical features like browser and OS had weak correlation with purchases.
+T
+I needed to determine which features actually matter for predicting conversion.
+A
+I performed EDA, correlation analysis, hypothesis testing, and feature importance analysis using Gradient Boosting.
+R
+The analysis showed PageValues dominated all other features, proving that user behavior matters more than device or browser. This insight directly supports focusing on engagement optimization rather than technical segmentation.
+
+⭐ 3. Tell me about a time you worked with ambiguous or messy data.
+S
+Behavioral metrics such as product pages visited and PageValues were highly skewed with extreme outliers.
+T
+I needed to ensure this didn’t negatively affect model performance.
+A
+I analyzed feature distributions, reviewed skewness, scaled numerical features, and selected tree‑based models, which handle skewed data better.
+R
+The models trained stably and achieved strong performance without overfitting, confirming that preprocessing and model choice were effective.
+
+⭐ 4. Tell me about a time you failed or your model didn’t perform as expected.
+S
+My initial Logistic Regression model struggled with precision for buyers.
+T
+I needed to improve detection of purchase sessions.
+A
+Instead of forcing further tuning, I used Logistic Regression as a baseline, then implemented Random Forest and Gradient Boosting for non‑linear learning.
+R
+The advanced models significantly improved buyer detection, with Gradient Boosting outperforming the baseline by a large margin.
+✅ Shows learning mindset — interviewers love this.
+
+⭐ 5. Describe a situation where you had to explain something complex to a non‑technical person.
+S
+In my support role at Concentrix, customers often faced complex technical or billing issues.
+T
+I needed to clearly explain the issue and resolution without technical jargon.
+A
+I broke problems into simple steps, used analogies, and confirmed understanding before closing cases.
+R
+This approach reduced repeat calls, improved customer satisfaction, and helped me develop clear communication skills that I now use when explaining ML results to non‑technical stakeholders.
+
+⭐ 6. Tell me about a time you worked under pressure.
+S
+At Concentrix, I regularly handled emergency and crisis calls.
+T
+My responsibility was to stay calm, gather accurate information, and ensure proper escalation.
+A
+I followed structured protocols, actively listened, documented details carefully, and escalated when necessary.
+R
+Incidents were handled safely and professionally, and I received positive feedback for composure under pressure.
+
+⭐ 7. Describe a time you had to learn something quickly.
+S
+When transitioning into Data Science, I needed to learn machine learning, deep learning, and Spark in a short time.
+T
+Build real-world, production‑style ML projects.
+A
+I combined structured learning with hands‑on projects, implemented end‑to‑end pipelines, and documented everything on GitHub.
+R
+I successfully delivered multiple ML projects with strong performance metrics and clear business insights.
+
+⭐ 8. Tell me about a time you improved a process.
+S
+Initial model evaluation relied too heavily on accuracy.
+T
+Avoid misleading performance metrics.
+A
+I shifted evaluation to ROC‑AUC, recall, confusion matrices, and feature importance.
+R
+This resulted in more reliable and business‑relevant models, ensuring buyers were detected effectively.
+
+⭐ 9. Describe a time you worked in a team.
+S
+This project was completed collaboratively with peers during the ML program.
+T
+Ensure consistent preprocessing, modeling, and documentation.
+A
+I aligned feature encoding and evaluation strategies, reviewed results together, and documented findings clearly.
+R
+The final project was cohesive, technically sound, and presentation‑ready.
+
+⭐ 10. Tell me about a time you took ownership of a project.
+S
+The online shopper project required full ownership from data exploration to conclusions.
+T
+Deliver a complete ML pipeline with business value.
+A
+I handled EDA, preprocessing, modeling, evaluation, and insight generation end‑to‑end.
+R
+The project produced a deployable model and clear recommendations for improving conversions.
+
+🏆 BEST CLOSING STAR ANSWER (USE IF ASKED “WHY YOU?”)
+
+My strength is combining analytical rigor, real‑world problem solving, and clear communication. I don’t just build models — I understand the business context, validate insights with data, and explain results in a way that drives decisions.
