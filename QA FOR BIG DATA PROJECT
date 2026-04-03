@@ -1,0 +1,130 @@
+1. Project Overview & Motivation
+Q1. Can you briefly explain your project?
+Best Answer:
+This project focuses on predicting hourly traffic volume using machine learning with Apache Spark MLlib. I used historical traffic data along with time‑based, weather, holiday, and lag features. After performing EDA, I built Random Forest and Gradient‑Boosted Trees regression models using Spark ML pipelines. The final tuned GBT model with lag features achieved the best performance with an RMSE of 291.4 and an R² of 0.978, making it suitable for real‑world traffic forecasting.
+
+Q2. Why is traffic volume prediction important?
+Best Answer:
+Accurate traffic prediction helps city planners and traffic authorities optimize congestion management, reduce travel delay, improve fuel efficiency, and minimize pollution. Predictive insights enable proactive decisions such as signal timing adjustments and infrastructure planning instead of reactive traffic control.
+
+2. Dataset & Data Understanding
+Q3. What dataset did you use and why?
+Best Answer:
+I used the Metro Interstate Traffic Volume dataset from the UCI Machine Learning Repository. It contains more than 48,000 hourly records collected over six years and includes traffic counts, weather data, and timestamps. The dataset is rich, realistic, and ideal for time‑based traffic forecasting.
+
+Q4. What were the main features in the dataset?
+Best Answer:
+
+Temporal features: hour, day of week, month
+Weather features: temperature, rain, snow, cloud coverage, weather main
+Holiday indicator
+Target variable: traffic_volume (vehicles per hour)
+
+
+3. Data Cleaning & Preprocessing
+Q5. How did you handle missing values?
+Best Answer:
+I first checked for missing values using Spark DataFrame operations and found none. Therefore, no imputation was required, which ensured data integrity during modeling.
+
+Q6. How did you extract time-based features?
+Best Answer:
+I used Spark SQL functions like hour(), dayofweek(), and month() on the timestamp column to derive temporal features. These captured daily, weekly, and seasonal traffic patterns.
+
+Q7. How did you handle categorical features?
+Best Answer:
+I removed the weather_description column due to redundancy and manually encoded weather_main using numeric indices, allowing tree-based algorithms to process the data efficiently without one‑hot encoding overhead.
+
+Q8. Why did you create an is_holiday feature?
+Best Answer:
+Holidays affect travel behavior. I created a binary is_holiday feature to allow the model to learn traffic reductions during holidays compared to normal weekdays.
+
+4. Exploratory Data Analysis (EDA)
+Q9. What insights did EDA reveal?
+Best Answer:
+EDA showed that hour of day had the strongest influence on traffic volume, followed by day of week. Weather had very little impact. Traffic volume displayed clear bimodal behavior—low traffic at night and high traffic during commuting hours.
+
+Q10. What did the traffic volume distribution look like?
+Best Answer:
+The distribution was bimodal with peaks during late-night low traffic hours and daytime commuting hours. Quartile analysis confirmed a balanced dataset, making it suitable for regression modeling.
+
+Q11. Why were time-based features more important than weather?
+Best Answer:
+Traffic flow is primarily driven by human activity patterns such as work schedules. Weather conditions like rain or snow showed minimal correlation since most travel still occurs regardless of light weather conditions.
+
+5. Model Selection & Justification
+Q12. Why did you choose Random Forest and GBT?
+Best Answer:
+Traffic volume data contains complex non‑linear patterns. Tree‑based ensemble models like Random Forest and Gradient‑Boosted Trees handle non‑linearities well, are robust to feature scaling, and scale efficiently in Spark.
+
+Q13. Difference between Random Forest and GBT?
+Best Answer:
+Random Forest builds trees independently using bootstrapped samples, improving stability.
+GBT builds trees sequentially, where each tree corrects previous errors, allowing it to achieve higher accuracy on complex patterns.
+
+6. Spark ML Pipelines
+Q14. Why did you use Spark ML pipelines?
+Best Answer:
+Pipelines ensure a clean, reproducible workflow by chaining feature assembly and modeling stages together. They reduce errors, improve scalability, and simplify model tuning and evaluation.
+
+Q15. What is VectorAssembler used for?
+Best Answer:
+VectorAssembler combines multiple feature columns into a single vector format required by Spark ML algorithms.
+
+7. Model Evaluation
+Q16. What evaluation metrics did you use and why?
+Best Answer:
+I used RMSE to measure average prediction error magnitude and R² to measure how much variance the model explains. Together, they provide a complete view of accuracy and stability.
+
+Q17. How did RF and GBT perform initially?
+Best Answer:
+Random Forest achieved an RMSE of 600.9 with R² 0.91, while GBT significantly improved performance with an RMSE of 461.7 and R² 0.95.
+
+8. Optimization & Lag Features
+Q18. Why did you perform hyperparameter tuning?
+Best Answer:
+To reduce prediction error and improve model stability. I used 5‑fold cross‑validation to find optimal parameters for the GBT model.
+
+Q19. What are lag features and why are they important?
+Best Answer:
+Lag features represent past traffic values, such as traffic from the previous hour or previous day. Traffic is highly time‑dependent, so past values provide strong predictive power.
+
+Q20. How much improvement did lag features provide?
+Best Answer:
+Lag features reduced RMSE from 419.5 to 291.4 and increased R² from 0.95 to 0.978, representing the single largest performance improvement in the project.
+
+9. Feature Importance
+Q21. Which features were most important?
+Best Answer:
+The most important feature was traffic_lag_1h, followed by hour of day and day of week. Weather and holiday variables showed minimal importance.
+
+Q22. What business insight does this provide?
+Best Answer:
+Traffic volume is primarily driven by habitual behavior and recent traffic history, not short‑term weather conditions. This insight helps planners focus on time‑based traffic control strategies.
+
+10. Model Limitations & Improvements
+Q23. What were the limitations of your model?
+Best Answer:
+The model slightly under‑predicted extreme traffic spikes. Also, the analysis was based on a single freeway location, limiting generalizability.
+
+Q24. How would you improve this project further?
+Best Answer:
+
+Use LSTM or temporal deep learning models
+Add real‑time streaming data via Spark Structured Streaming
+Include incident and accident data
+Extend to multi-location traffic modeling
+
+
+11. Deployment & Real-World Application
+Q25. Can this model be deployed in real time?
+Best Answer:
+Yes. Since it uses Spark pipelines and lag features, the model can be integrated into real‑time traffic monitoring systems to forecast upcoming congestion.
+
+Q26. Why is Spark suitable for this use case?
+Best Answer:
+Spark handles large volumes of data efficiently, supports distributed ML training, and scales seamlessly, making it ideal for smart city and transportation applications.
+
+12. Final Wrap-Up Question
+Q27. What is the key takeaway from your project?
+Best Answer:
+Temporal patterns and recent traffic history are far more important than weather in traffic prediction. A tuned Gradient‑Boosted Trees model with lag features provides excellent accuracy and is well suited for real‑world smart transportation systems.
